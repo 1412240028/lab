@@ -34,20 +34,16 @@ $cekBentrok = mysqli_prepare($conn,"
     WHERE id_lab = ?
     AND tanggal_pinjam = ?
     AND status = 'disetujui'
-    AND (
-        (jam_mulai < ? AND jam_selesai > ?)
-        OR (jam_mulai < ? AND jam_selesai > ?)
-        OR (jam_mulai >= ? AND jam_selesai <= ?)
-    )
+    AND jam_mulai < ?
+    AND jam_selesai > ?
 ");
 
 mysqli_stmt_bind_param(
-    $cekBentrok, "isssssss",
+    $cekBentrok, "isss",
     $id_lab,
     $tanggal_pinjam,
-    $jam_selesai, $jam_mulai,
-    $jam_selesai, $jam_selesai,
-    $jam_mulai, $jam_selesai
+    $jam_selesai,
+    $jam_mulai
 );
 
 mysqli_stmt_execute($cekBentrok);

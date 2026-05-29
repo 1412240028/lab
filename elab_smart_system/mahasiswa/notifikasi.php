@@ -168,10 +168,12 @@ $unread = $count['total'];
         <div class="bottom-nav">
             <a href="dashboard.php" class="nav-item">Beranda</a>
             <a href="riwayat.php" class="nav-item">Riwayat</a>
-            <a href="notifikasi.php" class="nav-item active-nav">Notifikasi</a>
-            <?php if ($unread > 0) { ?>
-                <span class="badge-count"><?= $unread ?></span>
-            <?php } ?>
+            <a href="notifikasi.php" class="nav-item active-nav">
+                Notifikasi
+                <?php if ($unread > 0) { ?>
+                    <span class="badge-count"><?= $unread ?></span>
+                <?php } ?>
+            </a>
             <a href="profil.php" class="nav-item">Profil</a>
             <a href="../logout.php" class="nav-item">Logout</a>
         </div>
