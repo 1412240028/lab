@@ -47,300 +47,232 @@ $inisial = strtoupper(substr($namaAdmin, 0, 2));
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="id">
 
 <head>
-    <title>E-Lab Smart System</title>
+    <title>Dashboard Admin - E-Lab Smart System</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Chart JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            background: #efefef;
-            font-family: Arial;
-        }
 
-        .mobile {
-            max-width: 430px;
-            margin: auto;
-            background: white;
-            min-height: 100vh;
-        }
-
-        .header {
-            background: #4b2ea7;
-            color: white;
-            padding: 25px;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-        }
-
-        .profile {
-            width: 55px;
-            height: 55px;
-            background: white;
-            color: #4b2ea7;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-        }
-
-        .stat-card {
-            background: #f8f8f8;
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-
-        .stat-number {
-            font-size: 35px;
-            font-weight: bold;
-        }
-
-        .section-title {
-            font-size: 14px;
-            font-weight: bold;
-            color: #555;
-            margin-top: 20px;
-            margin-bottom: 15px;
-        }
-
-        .request-card {
-            background: white;
-            border: 1px solid #eee;
-            border-radius: 20px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .role-badge {
-            background: #f2f2f2;
-            padding: 5px 10px;
-            border-radius: 10px;
-            font-size: 12px;
-            color: #666;
-        }
-
-        .btn-tolak {
-            border: 1px solid #c0392b;
-            color: #c0392b;
-            border-radius: 12px;
-            padding: 10px;
-            width: 48%;
-            text-align: center;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .btn-setuju {
-            background: #0f8b63;
-            color: white;
-            border-radius: 12px;
-            padding: 10px;
-            width: 48%;
-            text-align: center;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .lab-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .dot-green {
-            width: 15px;
-            height: 15px;
-            background: #10ac84;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 10px;
-        }
-
-        .dot-red {
-            width: 15px;
-            height: 15px;
-            background: #ee5253;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 10px;
-        }
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 430px;
-            background: white;
-            display: flex;
-            justify-content: space-around;
-            padding: 15px 0;
-            border-top: 1px solid #eee;
-        }
-
-        .nav-item {
-            color: #999;
-            font-size: 14px;
-            text-align: center;
-            text-decoration: none;
-        }
-
-        .active-nav {
-            color: #4b2ea7;
-            font-weight: bold;
-        }
-
-        .p-4 {
-            padding-bottom: 80px !important;
-        }
-    </style>
+    <!-- E-Lab UI -->
+    <link rel="stylesheet" href="../assets/css/elab-ui.css">
 </head>
 
 <body>
 
-    <div class="mobile">
+    <main class="app-shell">
+        <section class="app-container">
 
-        <div class="header d-flex justify-content-between align-items-center">
-            <div>
-                <h3>Panel Admin</h3>
-                <p class="mb-0"><?= htmlspecialchars($namaAdmin) ?> • Admin Laboratorium</p>
-                <a href="../logout.php" style="font-size:12px; color:#ddd; text-decoration:none;">
-                    Logout
-                </a>
-            </div>
-            <div class="profile"><?= $inisial ?></div>
-        </div>
-
-        <div class="p-4">
-
-            <div class="section-title">STATISTIK HARI INI</div>
-
-            <div class="row">
-                <div class="col-6">
-                    <div class="stat-card">
-                        <div class="stat-number text-primary"><?= $total ?></div>
-                        Permohonan masuk
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="stat-card">
-                        <div class="stat-number text-danger"><?= $review ?></div>
-                        Menunggu review
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="stat-card">
-                        <div class="stat-number text-success"><?= $setuju ?></div>
-                        Disetujui hari ini
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="stat-card">
-                        <div class="stat-number text-success"><?= $labaktif ?></div>
-                        Lab aktif dipakai
-                    </div>
-                </div>
-            </div>
-
-            <div class="section-title">PEMINJAMAN PER BULAN</div>
-
-            <div class="stat-card">
-                <canvas id="grafikPeminjaman"></canvas>
-            </div>
-
-            <script>
-                const ctx = document.getElementById('grafikPeminjaman').getContext('2d');
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: <?= json_encode($bulan_label) ?>,
-                        datasets: [{
-                            label: 'Jumlah Peminjaman',
-                            data: <?= json_encode($data_grafik) ?>,
-                            backgroundColor: '#4b2ea7',
-                            borderRadius: 8,
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: { stepSize: 1 }
-                            }
-                        }
-                    }
-                });
-            </script>
-
-            <div class="section-title">PERMOHONAN MENUNGGU REVIEW</div>
-
-            <?php if (mysqli_num_rows($peminjaman) == 0) { ?>
-                <p class="text-secondary">Tidak ada permohonan menunggu.</p>
-            <?php } ?>
-
-            <?php while ($d = mysqli_fetch_assoc($peminjaman)) { ?>
-                <div class="request-card">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h5><?= htmlspecialchars($d['nama']) ?></h5>
-                            <p class="text-secondary mb-2">
-                                <?= htmlspecialchars($d['nama_lab']) ?> •
-                                <?= $d['tanggal_pinjam'] ?>,
-                                <?= $d['jam_mulai'] ?>-<?= $d['jam_selesai'] ?>
-                            </p>
-                        </div>
-                        <div>
-                            <span class="role-badge"><?= ucfirst($d['role']) ?></span>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between mt-3">
-                        <a href="proses.php?id=<?= $d['id_peminjaman'] ?>&status=ditolak" class="btn-tolak">Tolak</a>
-                        <a href="proses.php?id=<?= $d['id_peminjaman'] ?>&status=disetujui" class="btn-setuju">Setujui</a>
-                    </div>
-                </div>
-            <?php } ?>
-
-            <div class="section-title">STATUS LABORATORIUM</div>
-
-            <?php
-            $lab = mysqli_query($conn, "SELECT * FROM laboratorium");
-            while ($l = mysqli_fetch_assoc($lab)) {
-                ?>
-                <div class="lab-item">
+            <!-- Header -->
+            <header class="app-header admin">
+                <div class="app-header-content d-flex justify-content-between align-items-center">
                     <div>
-                        <?php if ($l['status'] == 'tersedia') { ?>
-                            <span class="dot-green"></span>
-                        <?php } else { ?>
-                            <span class="dot-red"></span>
-                        <?php } ?>
-                        <?= htmlspecialchars($l['nama_lab']) ?>
+                        <h1 class="app-title">Panel Admin</h1>
+                        <p class="app-subtitle">
+                            <?= htmlspecialchars($namaAdmin) ?> • Admin Laboratorium
+                        </p>
+                        <a href="../logout.php" class="app-logout">Keluar dari sistem</a>
                     </div>
-                    <div class="text-secondary"><?= $l['kapasitas'] ?> kursi</div>
+
+                    <div class="profile-circle">
+                        <?= htmlspecialchars($inisial) ?>
+                    </div>
                 </div>
-            <?php } ?>
+            </header>
 
-        </div>
+            <div class="app-body">
 
-        <div class="bottom-nav">
-            <a href="dashboard.php" class="nav-item active-nav" style="text-decoration:none;">Beranda</a>
-            <a href="jadwal.php" class="nav-item" style="text-decoration:none;">Jadwal</a>
-            <a href="laporan.php" class="nav-item" style="text-decoration:none;">Laporan</a>
-            <a href="kelola.php" class="nav-item" style="text-decoration:none;">Kelola</a>
-            <a href="kelola_user.php" class="nav-item" style="text-decoration:none;">User</a>
-            <a href="../logout.php" class="nav-item">Logout</a>
-        </div>
+                <!-- Statistik -->
+                <div class="section-label">Statistik Sistem</div>
 
-    </div>
+                <div class="stat-grid">
+                    <div class="stat-box admin">
+                        <div class="stat-number purple"><?= $total ?></div>
+                        <div class="stat-text">Total permohonan</div>
+                    </div>
+
+                    <div class="stat-box admin">
+                        <div class="stat-number warning"><?= $review ?></div>
+                        <div class="stat-text">Menunggu review</div>
+                    </div>
+
+                    <div class="stat-box admin">
+                        <div class="stat-number success"><?= $setuju ?></div>
+                        <div class="stat-text">Disetujui</div>
+                    </div>
+
+                    <div class="stat-box admin">
+                        <div class="stat-number primary"><?= $labaktif ?></div>
+                        <div class="stat-text">Lab tersedia</div>
+                    </div>
+                </div>
+
+                <div class="desktop-grid mt-4">
+
+                    <div>
+                        <!-- Grafik -->
+                        <div class="section-label">Peminjaman Per Bulan</div>
+
+                        <div class="panel-card chart-card">
+                            <canvas id="grafikPeminjaman" height="160"></canvas>
+                        </div>
+
+                        <script>
+                            const ctx = document.getElementById('grafikPeminjaman').getContext('2d');
+
+                            new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: <?= json_encode($bulan_label) ?>,
+                                    datasets: [{
+                                        label: 'Jumlah Peminjaman',
+                                        data: <?= json_encode($data_grafik) ?>,
+                                        backgroundColor: '#40318f',
+                                        borderRadius: 10,
+                                        maxBarThickness: 36
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    plugins: {
+                                        legend: {
+                                            display: false
+                                        }
+                                    },
+                                    scales: {
+                                        x: {
+                                            grid: {
+                                                display: false
+                                            },
+                                            ticks: {
+                                                color: '#64748b',
+                                                font: {
+                                                    family: 'Inter',
+                                                    weight: '700'
+                                                }
+                                            }
+                                        },
+                                        y: {
+                                            beginAtZero: true,
+                                            ticks: {
+                                                stepSize: 1,
+                                                color: '#64748b',
+                                                font: {
+                                                    family: 'Inter',
+                                                    weight: '700'
+                                                }
+                                            },
+                                            grid: {
+                                                color: 'rgba(148, 163, 184, 0.18)'
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        </script>
+
+                        <!-- Permohonan -->
+                        <div class="section-label">Permohonan Menunggu Review</div>
+
+                        <?php if (mysqli_num_rows($peminjaman) == 0) { ?>
+                            <div class="empty-state">
+                                Tidak ada permohonan yang menunggu review. Aman, admin bisa napas dulu.
+                            </div>
+                        <?php } ?>
+
+                        <?php while ($d = mysqli_fetch_assoc($peminjaman)) { ?>
+                            <div class="request-card-modern">
+                                <div class="d-flex justify-content-between align-items-start gap-3">
+                                    <div>
+                                        <h2 class="request-name"><?= htmlspecialchars($d['nama']) ?></h2>
+                                        <p class="request-meta">
+                                            <?= htmlspecialchars($d['nama_lab']) ?><br>
+                                            <?= htmlspecialchars($d['tanggal_pinjam']) ?>,
+                                            <?= htmlspecialchars($d['jam_mulai']) ?> - <?= htmlspecialchars($d['jam_selesai']) ?>
+                                        </p>
+                                    </div>
+
+                                    <span class="role-badge-modern">
+                                        <?= htmlspecialchars(ucfirst($d['role'])) ?>
+                                    </span>
+                                </div>
+
+                                <div class="action-row">
+                                    <a
+                                        href="proses.php?id=<?= $d['id_peminjaman'] ?>&status=ditolak"
+                                        class="btn-action btn-reject"
+                                        onclick="return confirm('Tolak permohonan ini?')">
+                                        Tolak
+                                    </a>
+
+                                    <a
+                                        href="proses.php?id=<?= $d['id_peminjaman'] ?>&status=disetujui"
+                                        class="btn-action btn-approve"
+                                        onclick="return confirm('Setujui permohonan ini?')">
+                                        Setujui
+                                    </a>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+
+                    <div>
+                        <!-- Status Lab -->
+                        <div class="section-label">Status Laboratorium</div>
+
+                        <div class="panel-card">
+                            <?php
+                            $lab = mysqli_query($conn, "SELECT * FROM laboratorium");
+                            if (mysqli_num_rows($lab) == 0) {
+                                echo '<div class="empty-state">Belum ada data laboratorium.</div>';
+                            }
+
+                            while ($l = mysqli_fetch_assoc($lab)) {
+                            ?>
+                                <div class="lab-status-item">
+                                    <div class="lab-name">
+                                        <?php if ($l['status'] == 'tersedia') { ?>
+                                            <span class="status-dot green"></span>
+                                        <?php } else { ?>
+                                            <span class="status-dot red"></span>
+                                        <?php } ?>
+
+                                        <?= htmlspecialchars($l['nama_lab']) ?>
+                                    </div>
+
+                                    <div class="lab-capacity">
+                                        <?= htmlspecialchars($l['kapasitas']) ?> kursi
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Bottom Nav -->
+            <nav class="bottom-nav-modern">
+                <a href="dashboard.php" class="active">Beranda</a>
+                <a href="jadwal.php">Jadwal</a>
+                <a href="laporan.php">Laporan</a>
+                <a href="kelola.php">Kelola</a>
+                <a href="kelola_user.php">User</a>
+                <a href="../logout.php">Logout</a>
+            </nav>
+
+        </section>
+    </main>
 
 </body>
 

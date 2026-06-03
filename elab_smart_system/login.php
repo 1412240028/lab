@@ -6,7 +6,6 @@ if (isset($_POST['login'])) {
     $email = trim($_POST['email']);
     $plainPassword = trim($_POST['password']);
 
-    // Ambil user berdasarkan email saja, lalu verifikasi password dengan password_verify.
     $stmt = mysqli_prepare($conn, "
         SELECT id_user, nama, email, role, password
         FROM users
@@ -30,13 +29,13 @@ if (isset($_POST['login'])) {
                     $storedHash = $data['password'];
                     $isValid = password_verify($plainPassword, $storedHash);
 
-                    // Kompatibilitas user lama (MD5)
                     if (!$isValid) {
                         $isValid = hash_equals(md5($plainPassword), $storedHash);
+
                         if ($isValid) {
-                            // Migrasi otomatis: re-hash MD5 ke password_hash
                             $newHash = password_hash($plainPassword, PASSWORD_DEFAULT);
                             $upd = mysqli_prepare($conn, "UPDATE users SET password=? WHERE id_user=?");
+
                             if ($upd) {
                                 mysqli_stmt_bind_param($upd, "si", $newHash, $data['id_user']);
                                 mysqli_stmt_execute($upd);
@@ -45,27 +44,26 @@ if (isset($_POST['login'])) {
                     }
 
                     if ($isValid) {
-                            // Session fixation protection
-                            session_regenerate_id(true);
+                        session_regenerate_id(true);
 
-                            $_SESSION['id_user'] = $data['id_user'];
-                            $_SESSION['nama'] = $data['nama'];
-                            $_SESSION['role'] = $data['role'];
+                        $_SESSION['id_user'] = $data['id_user'];
+                        $_SESSION['nama'] = $data['nama'];
+                        $_SESSION['role'] = $data['role'];
 
-                            if ($data['role'] === 'admin') {
-                                header("Location: admin/dashboard.php");
-                                exit;
-                            }
-                            if ($data['role'] === 'mahasiswa') {
-                                header("Location: mahasiswa/dashboard.php");
-                                exit;
-                            }
-
-                            // Role selain admin/mahasiswa
-                            $error = "Role tidak valid. Hubungi administrator.";
-                        } else {
-                            $error = "Email atau password salah";
+                        if ($data['role'] === 'admin') {
+                            header("Location: admin/dashboard.php");
+                            exit;
                         }
+
+                        if ($data['role'] === 'mahasiswa') {
+                            header("Location: mahasiswa/dashboard.php");
+                            exit;
+                        }
+
+                        $error = "Role tidak valid. Hubungi administrator.";
+                    } else {
+                        $error = "Email atau password salah";
+                    }
                 } else {
                     $error = "Email atau password salah";
                 }
@@ -76,57 +74,90 @@ if (isset($_POST['login'])) {
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="id">
 
 <head>
-    <title>Login E-Lab</title>
+    <title>Login - E-Lab Smart System</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: #efefef;
-            font-family: Arial;
-        }
 
-        .login-box {
-            max-width: 400px;
-            margin: auto;
-            margin-top: 80px;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-        .btn-login {
-            background: #4b2ea7;
-            color: white;
-        }
-    </style>
+    <!-- E-Lab UI -->
+    <link rel="stylesheet" href="assets/css/elab-ui.css">
 </head>
 
 <body>
 
-    <div class="login-box">
-        <h3 class="text-center mb-4">E-Lab Smart System</h3>
+    <main class="elab-page">
+        <section class="elab-phone">
 
-        <?php if (isset($error)) { ?>
-            <div class="alert alert-danger"><?= $error ?></div>
-        <?php } ?>
+            <div class="auth-hero">
+                <div class="auth-logo">
+                    <img src="assets/images/E-Lab System Logo.jpg" alt="E-Lab Smart System Logo">
+                </div>
+                <h1>E-Lab Smart System</h1>
+                <p>Sistem manajemen peminjaman laboratorium</p>
+            </div>
 
-        <form method="POST">
-            <div class="mb-3">
-                <input type="email" name="email" class="form-control" placeholder="Masukkan Email" required>
+            <div class="auth-card">
+
+                <div class="auth-tabs">
+                    <a href="login.php" class="auth-tab active">Masuk</a>
+                    <a href="register.php" class="auth-tab">Daftar</a>
+                </div>
+
+                <?php if (isset($error)) { ?>
+                    <div class="alert alert-danger mb-3">
+                        <?= htmlspecialchars($error) ?>
+                    </div>
+                <?php } ?>
+
+                <form method="POST" autocomplete="off">
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" placeholder="Masukkan email akun" required
+                            value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>">
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="Masukkan password"
+                            required>
+                    </div>
+
+                    <div class="text-end mb-4">
+                        <span style="font-size:13px; color:#6b7280;">Lupa password? Hubungi Admin Lab</span>
+                    </div>
+
+                    <button type="submit" name="login" class="btn-elab btn-primary-elab w-100">
+                        Masuk ke Sistem →
+                    </button>
+
+                    <div class="divider">atau masuk sebagai</div>
+
+                    <div class="role-grid">
+                        <div class="role-chip student">Mahasiswa</div>
+                        <div class="role-chip lecturer">Dosen</div>
+                        <div class="role-chip admin">Admin</div>
+                    </div>
+
+                    <p class="auth-helper">
+                        Belum punya akun?
+                        <a href="register.php">Daftar sekarang</a>
+                    </p>
+
+                </form>
+
             </div>
-            <div class="mb-3">
-                <input type="password" name="password" class="form-control" placeholder="Masukkan Password" required>
-            </div>
-            <button type="submit" name="login" class="btn btn-login w-100">Login</button>
-            <div class="text-center mt-3">
-                <a href="register.php" style="color:#4b2ea7;">Belum punya akun? Daftar</a>
-            </div>
-        </form>
-    </div>
+
+        </section>
+    </main>
 
 </body>
 

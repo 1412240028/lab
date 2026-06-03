@@ -14,147 +14,231 @@ mysqli_stmt_execute($stmt);
 $user = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
 
 $inisial = strtoupper(substr($user['nama'], 0, 2));
+
+$idUser = (int) $_SESSION['id_user'];
+
+$stmtTotal = mysqli_prepare($conn, "
+    SELECT COUNT(*) as total 
+    FROM peminjaman 
+    WHERE id_user=?
+");
+mysqli_stmt_bind_param($stmtTotal, "i", $idUser);
+mysqli_stmt_execute($stmtTotal);
+$totalPeminjaman = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtTotal))['total'];
+
+$stmtSetuju = mysqli_prepare($conn, "
+    SELECT COUNT(*) as total 
+    FROM peminjaman 
+    WHERE id_user=? AND status='disetujui'
+");
+mysqli_stmt_bind_param($stmtSetuju, "i", $idUser);
+mysqli_stmt_execute($stmtSetuju);
+$totalDisetujui = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtSetuju))['total'];
+
+$stmtMenunggu = mysqli_prepare($conn, "
+    SELECT COUNT(*) as total 
+    FROM peminjaman 
+    WHERE id_user=? AND status='menunggu'
+");
+mysqli_stmt_bind_param($stmtMenunggu, "i", $idUser);
+mysqli_stmt_execute($stmtMenunggu);
+$totalMenunggu = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtMenunggu))['total'];
+
+$stmtDitolak = mysqli_prepare($conn, "
+    SELECT COUNT(*) as total 
+    FROM peminjaman 
+    WHERE id_user=? AND status='ditolak'
+");
+mysqli_stmt_bind_param($stmtDitolak, "i", $idUser);
+mysqli_stmt_execute($stmtDitolak);
+$totalDitolak = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtDitolak))['total'];
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="id">
 
 <head>
-    <title>Profil</title>
+    <title>Profil - E-Lab Smart System</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: #efefef;
-            font-family: Arial;
-        }
 
-        .mobile {
-            max-width: 430px;
-            margin: auto;
-            background: white;
-            min-height: 100vh;
-        }
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-        .header {
-            background: #4b2ea7;
-            color: white;
-            padding: 25px;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            text-align: center;
-        }
-
-        .avatar {
-            width: 80px;
-            height: 80px;
-            background: white;
-            color: #4b2ea7;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            font-size: 28px;
-            margin: auto;
-            margin-bottom: 10px;
-        }
-
-        .card-box {
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-
-        .btn-ungu {
-            background: #4b2ea7;
-            color: white;
-        }
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            max-width: 430px;
-            background: white;
-            display: flex;
-            justify-content: space-around;
-            padding: 15px 0;
-            border-top: 1px solid #eee;
-        }
-
-        .nav-item {
-            color: #999;
-            font-size: 14px;
-            text-align: center;
-            text-decoration: none;
-        }
-
-        .active-nav {
-            color: #4b2ea7;
-            font-weight: bold;
-        }
-
-        .p-4 {
-            padding-bottom: 80px !important;
-        }
-    </style>
+    <!-- E-Lab UI -->
+    <link rel="stylesheet" href="../assets/css/elab-ui.css">
 </head>
 
 <body>
 
-    <div class="mobile">
+    <main class="app-shell">
+        <section class="app-container">
 
-        <div class="header">
-            <div class="avatar"><?= $inisial ?></div>
-            <h4><?= htmlspecialchars($user['nama']) ?></h4>
-            <p class="mb-0" style="font-size:13px; color:#ddd;">
-                <?= htmlspecialchars($user['email']) ?> • <?= ucfirst($user['role']) ?>
-            </p>
-        </div>
-
-        <div class="p-4">
-
-            <div class="card-box">
-                <h5>Edit Profil</h5>
-                <form method="POST" action="profil_proses.php">
-
-                    <div class="mb-3">
-                        <label>Nama</label>
-                        <input type="text" name="nama" class="form-control"
-                            value="<?= htmlspecialchars($user['nama']) ?>" required>
+            <!-- Header -->
+            <header class="app-header student profile-header-card">
+                <div class="app-header-content">
+                    <div class="profile-avatar-large">
+                        <?= htmlspecialchars($inisial) ?>
                     </div>
 
-                    <div class="mb-3">
-                        <label>Password Lama</label>
-                        <input type="password" name="password_lama" class="form-control" placeholder="Wajib diisi"
-                            required>
+                    <h1 class="profile-name-title">
+                        <?= htmlspecialchars($user['nama']) ?>
+                    </h1>
+
+                    <p class="profile-email-subtitle">
+                        <?= htmlspecialchars($user['email']) ?><br>
+                        <?= htmlspecialchars(ucfirst($user['role'])) ?> • E-Lab Smart System
+                    </p>
+
+                    <a href="../logout.php" class="app-logout justify-content-center">
+                        Keluar dari sistem
+                    </a>
+                </div>
+            </header>
+
+            <div class="app-body">
+
+                <!-- Ringkasan -->
+                <div class="section-label">Ringkasan Akun</div>
+
+                <div class="stat-grid">
+                    <div class="stat-box">
+                        <div class="stat-number primary"><?= htmlspecialchars($totalPeminjaman) ?></div>
+                        <div class="stat-text">Total pengajuan</div>
                     </div>
 
-                    <div class="mb-3">
-                        <label>Password Baru <span class="text-secondary" style="font-size:12px;">(kosongkan jika tidak
-                                ingin ganti)</span></label>
-                        <input type="password" name="password_baru" class="form-control" placeholder="Opsional">
+                    <div class="stat-box">
+                        <div class="stat-number success"><?= htmlspecialchars($totalDisetujui) ?></div>
+                        <div class="stat-text">Disetujui</div>
                     </div>
 
-                    <button class="btn btn-ungu w-100">Simpan Perubahan</button>
+                    <div class="stat-box">
+                        <div class="stat-number warning"><?= htmlspecialchars($totalMenunggu) ?></div>
+                        <div class="stat-text">Menunggu</div>
+                    </div>
 
-                </form>
+                    <div class="stat-box">
+                        <div class="stat-number purple"><?= htmlspecialchars($totalDitolak) ?></div>
+                        <div class="stat-text">Ditolak</div>
+                    </div>
+                </div>
+
+                <div class="profile-layout mt-4">
+
+                    <!-- Detail Akun -->
+                    <div>
+                        <div class="profile-info-box">
+                            <h2>Informasi Profil</h2>
+                            <p>
+                                Data akun digunakan untuk identitas peminjam di E-Lab Smart System. Ubah nama atau password jika diperlukan.
+                            </p>
+                        </div>
+
+                        <div class="profile-detail-card mt-3">
+                            <h2 class="panel-title">Detail Akun</h2>
+                            <p class="panel-desc">
+                                Ringkasan informasi akun yang sedang aktif.
+                            </p>
+
+                            <div class="profile-detail-list">
+                                <div class="profile-detail-item">
+                                    <span class="profile-detail-label">Nama</span>
+                                    <span class="profile-detail-value">
+                                        <?= htmlspecialchars($user['nama']) ?>
+                                    </span>
+                                </div>
+
+                                <div class="profile-detail-item">
+                                    <span class="profile-detail-label">Email</span>
+                                    <span class="profile-detail-value">
+                                        <?= htmlspecialchars($user['email']) ?>
+                                    </span>
+                                </div>
+
+                                <div class="profile-detail-item">
+                                    <span class="profile-detail-label">Role</span>
+                                    <span class="profile-detail-value">
+                                        <?= htmlspecialchars(ucfirst($user['role'])) ?>
+                                    </span>
+                                </div>
+
+                                <div class="profile-detail-item">
+                                    <span class="profile-detail-label">ID User</span>
+                                    <span class="profile-detail-value">
+                                        #<?= htmlspecialchars($user['id_user']) ?>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Edit Profil -->
+                    <div class="profile-form-panel">
+                        <h2 class="panel-title">Edit Profil</h2>
+                        <p class="panel-desc">
+                            Masukkan password lama untuk menyimpan perubahan profil.
+                        </p>
+
+                        <div class="password-note">
+                            Password baru boleh dikosongkan kalau kamu hanya ingin mengganti nama.
+                        </div>
+
+                        <form method="POST" action="profil_proses.php">
+
+                            <div class="input-group-modern">
+                                <label>Nama Lengkap</label>
+                                <input
+                                    type="text"
+                                    name="nama"
+                                    class="form-control"
+                                    value="<?= htmlspecialchars($user['nama']) ?>"
+                                    required>
+                            </div>
+
+                            <div class="input-group-modern">
+                                <label>Password Lama</label>
+                                <input
+                                    type="password"
+                                    name="password_lama"
+                                    class="form-control"
+                                    placeholder="Masukkan password lama"
+                                    required>
+                            </div>
+
+                            <div class="input-group-modern">
+                                <label>Password Baru</label>
+                                <input
+                                    type="password"
+                                    name="password_baru"
+                                    class="form-control"
+                                    placeholder="Kosongkan jika tidak ingin ganti">
+                            </div>
+
+                            <button class="btn profile-save-btn w-100">
+                                Simpan Perubahan
+                            </button>
+
+                        </form>
+                    </div>
+
+                </div>
+
             </div>
 
-        </div>
+            <!-- Bottom Nav -->
+            <nav class="bottom-nav-modern bottom-nav-student">
+                <a href="dashboard.php">Beranda</a>
+                <a href="riwayat.php">Riwayat</a>
+                <a href="notifikasi.php">Notifikasi</a>
+                <a href="profil.php" class="active">Profil</a>
+                <a href="../logout.php">Logout</a>
+            </nav>
 
-        <div class="bottom-nav">
-            <a href="dashboard.php" class="nav-item">Beranda</a>
-            <a href="riwayat.php" class="nav-item">Riwayat</a>
-            <a href="notifikasi.php" class="nav-item">Notifikasi</a>
-            <a href="profil.php" class="nav-item active-nav">Profil</a>
-            <a href="../logout.php" class="nav-item">Logout</a>
-        </div>
-
-    </div>
+        </section>
+    </main>
 
 </body>
 

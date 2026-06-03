@@ -2,7 +2,7 @@
 session_start();
 include '../koneksi.php';
 
-if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
     header("Location: ../login.php");
     exit;
 }
@@ -17,26 +17,26 @@ $where = "WHERE 1=1";
 $params = [];
 $types = "";
 
-if($cari != ''){
+if ($cari != '') {
     $where .= " AND (users.nama LIKE ? OR laboratorium.nama_lab LIKE ?)";
     $params[] = "%$cari%";
     $params[] = "%$cari%";
     $types .= "ss";
 }
 
-if($filter_status != ''){
+if ($filter_status != '') {
     $where .= " AND peminjaman.status = ?";
     $params[] = $filter_status;
     $types .= "s";
 }
 
-if($filter_tanggal != ''){
+if ($filter_tanggal != '') {
     $where .= " AND peminjaman.tanggal_pinjam = ?";
     $params[] = $filter_tanggal;
     $types .= "s";
 }
 
-$stmt = mysqli_prepare($conn,"
+$stmt = mysqli_prepare($conn, "
     SELECT peminjaman.*, users.nama, laboratorium.nama_lab
     FROM peminjaman
     JOIN users ON peminjaman.id_user = users.id_user
@@ -45,118 +45,214 @@ $stmt = mysqli_prepare($conn,"
     ORDER BY peminjaman.tanggal_pinjam DESC
 ");
 
-if(count($params) > 0){
+if (count($params) > 0) {
     mysqli_stmt_bind_param($stmt, $types, ...$params);
 }
 
 mysqli_stmt_execute($stmt);
 $data = mysqli_stmt_get_result($stmt);
+
+// Statistik ringkas laporan
+$totalLaporan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM peminjaman"));
+$totalMenunggu = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM peminjaman WHERE status='menunggu'"));
+$totalDisetujui = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM peminjaman WHERE status='disetujui'"));
+$totalDitolak = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM peminjaman WHERE status='ditolak'"));
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="id">
+
 <head>
-    <title>Laporan Peminjaman</title>
+    <title>Laporan Peminjaman - E-Lab Smart System</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body{ background:#efefef; font-family:Arial; }
-        .mobile{ max-width:430px; margin:auto; background:white; min-height:100vh; }
-        .header{ background:#4b2ea7; color:white; padding:25px; border-bottom-left-radius:20px; border-bottom-right-radius:20px; }
-        .card-box{ background:white; padding:20px; border-radius:20px; box-shadow:0 2px 5px rgba(0,0,0,0.1); margin-bottom:20px; }
-        .btn-ungu{ background:#4b2ea7; color:white; }
-        .laporan-card{ background:white; border:1px solid #eee; border-radius:15px; padding:15px; margin-bottom:15px; box-shadow:0 2px 5px rgba(0,0,0,0.05); }
-        .badge-menunggu{ background:#f39c12; color:white; padding:4px 10px; border-radius:10px; font-size:12px; }
-        .badge-disetujui{ background:#0f8b63; color:white; padding:4px 10px; border-radius:10px; font-size:12px; }
-        .badge-ditolak{ background:#c0392b; color:white; padding:4px 10px; border-radius:10px; font-size:12px; }
-        .bottom-nav{ position:fixed; bottom:0; width:100%; max-width:430px; background:white; display:flex; justify-content:space-around; padding:15px 0; border-top:1px solid #eee; }
-        .nav-item{ color:#999; font-size:14px; text-align:center; text-decoration:none; }
-        .active-nav{ color:#4b2ea7; font-weight:bold; }
-        .p-4{ padding-bottom:80px!important; }
-    </style>
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- E-Lab UI -->
+    <link rel="stylesheet" href="../assets/css/elab-ui.css">
 </head>
+
 <body>
 
-<div class="mobile">
+    <main class="app-shell">
+        <section class="app-container">
 
-    <div class="header">
-        <h3>Laporan Peminjaman</h3>
-        <p class="mb-0"><?= htmlspecialchars($_SESSION['nama']) ?></p>
-    </div>
-
-    <div class="p-4">
-
-        <!-- Form Filter -->
-        <div class="card-box">
-            <form method="GET">
-
-                <div class="mb-3">
-                    <input type="text" name="cari" class="form-control"
-                        placeholder="Cari nama / lab..."
-                        value="<?= htmlspecialchars($cari) ?>">
-                </div>
-
-                <div class="mb-3">
-                    <select name="status" class="form-control">
-                        <option value="">Semua Status</option>
-                        <option value="menunggu" <?= $filter_status == 'menunggu' ? 'selected' : '' ?>>Menunggu</option>
-                        <option value="disetujui" <?= $filter_status == 'disetujui' ? 'selected' : '' ?>>Disetujui</option>
-                        <option value="ditolak" <?= $filter_status == 'ditolak' ? 'selected' : '' ?>>Ditolak</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <input type="date" name="tanggal" class="form-control"
-                        value="<?= $filter_tanggal ?>">
-                </div>
-
-                <div class="d-flex gap-2">
-                    <button class="btn btn-ungu w-100">Filter</button>
-                    <a href="laporan.php" class="btn btn-secondary w-100">Reset</a>
-                </div>
-
-                <div class="d-flex gap-2 mt-2">
-                    <a href="export_excel.php" class="btn btn-success w-100">Export Excel</a>
-                    <a href="export_pdf.php" class="btn btn-danger w-100">Export PDF</a>
-                </div>
-
-            </form>
-        </div>
-
-        <!-- Hasil -->
-        <?php if(mysqli_num_rows($data) == 0){ ?>
-            <p class="text-secondary">Tidak ada data ditemukan.</p>
-        <?php } ?>
-
-        <?php while($d = mysqli_fetch_assoc($data)){ ?>
-        <div class="laporan-card">
-            <div class="d-flex justify-content-between align-items-start">
-                <div>
-                    <b><?= htmlspecialchars($d['nama']) ?></b>
-                    <p class="mb-1 text-secondary" style="font-size:13px;">
-                        <?= htmlspecialchars($d['nama_lab']) ?>
+            <!-- Header -->
+            <header class="app-header admin">
+                <div class="app-header-content">
+                    <h1 class="app-title">Laporan Peminjaman</h1>
+                    <p class="app-subtitle">
+                        <?= htmlspecialchars($_SESSION['nama']) ?> • Monitoring data peminjaman laboratorium
                     </p>
-                    <p class="mb-0 text-secondary" style="font-size:13px;">
-                        📅 <?= $d['tanggal_pinjam'] ?> • 🕐 <?= $d['jam_mulai'] ?>-<?= $d['jam_selesai'] ?>
-                    </p>
+                    <a href="../logout.php" class="app-logout">Keluar dari sistem</a>
                 </div>
-                <span class="badge-<?= $d['status'] ?>"><?= ucfirst($d['status']) ?></span>
+            </header>
+
+            <div class="app-body">
+
+                <!-- Statistik -->
+                <div class="section-label">Ringkasan Laporan</div>
+
+                <div class="stat-grid">
+                    <div class="stat-box admin">
+                        <div class="stat-number purple"><?= $totalLaporan ?></div>
+                        <div class="stat-text">Total data</div>
+                    </div>
+
+                    <div class="stat-box admin">
+                        <div class="stat-number warning"><?= $totalMenunggu ?></div>
+                        <div class="stat-text">Menunggu</div>
+                    </div>
+
+                    <div class="stat-box admin">
+                        <div class="stat-number success"><?= $totalDisetujui ?></div>
+                        <div class="stat-text">Disetujui</div>
+                    </div>
+
+                    <div class="stat-box admin">
+                        <div class="stat-number primary"><?= $totalDitolak ?></div>
+                        <div class="stat-text">Ditolak</div>
+                    </div>
+                </div>
+
+                <div class="report-page-grid mt-4">
+
+                    <!-- Filter -->
+                    <div>
+                        <div class="report-summary">
+                            <h2>Filter Data</h2>
+                            <p>
+                                Gunakan pencarian, status, atau tanggal untuk menemukan laporan peminjaman secara cepat.
+                            </p>
+                        </div>
+
+                        <div class="report-filter-panel">
+                            <form method="GET">
+
+                                <div class="filter-grid">
+
+                                    <div class="input-group-modern">
+                                        <label>Cari Nama / Lab</label>
+                                        <input
+                                            type="text"
+                                            name="cari"
+                                            class="form-control"
+                                            placeholder="Contoh: Dhoni / Lab Komputer"
+                                            value="<?= htmlspecialchars($cari) ?>">
+                                    </div>
+
+                                    <div class="input-group-modern">
+                                        <label>Status</label>
+                                        <select name="status" class="form-select">
+                                            <option value="">Semua Status</option>
+                                            <option value="menunggu" <?= $filter_status == 'menunggu' ? 'selected' : '' ?>>
+                                                Menunggu
+                                            </option>
+                                            <option value="disetujui" <?= $filter_status == 'disetujui' ? 'selected' : '' ?>>
+                                                Disetujui
+                                            </option>
+                                            <option value="ditolak" <?= $filter_status == 'ditolak' ? 'selected' : '' ?>>
+                                                Ditolak
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="input-group-modern">
+                                        <label>Tanggal</label>
+                                        <input
+                                            type="date"
+                                            name="tanggal"
+                                            class="form-control"
+                                            value="<?= htmlspecialchars($filter_tanggal) ?>">
+                                    </div>
+
+                                </div>
+
+                                <div class="report-actions">
+                                    <button class="btn-filter">
+                                        Filter
+                                    </button>
+
+                                    <a href="laporan.php" class="btn-reset">
+                                        Reset
+                                    </a>
+                                </div>
+
+                                <div class="export-actions">
+                                    <a href="export_excel.php" class="btn-export-excel">
+                                        Export Excel
+                                    </a>
+
+                                    <a href="export_pdf.php" class="btn-export-pdf">
+                                        Export PDF
+                                    </a>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Hasil -->
+                    <div>
+                        <div class="section-label mt-0">Hasil Laporan</div>
+
+                        <?php if (mysqli_num_rows($data) == 0) { ?>
+                            <div class="empty-state">
+                                Tidak ada data ditemukan. Coba ubah filter pencarian.
+                            </div>
+                        <?php } ?>
+
+                        <div class="report-list">
+                            <?php while ($d = mysqli_fetch_assoc($data)) { ?>
+                                <div class="report-card-modern">
+                                    <div class="report-card-top">
+                                        <div>
+                                            <h3 class="report-user">
+                                                <?= htmlspecialchars($d['nama']) ?>
+                                            </h3>
+
+                                            <p class="report-lab">
+                                                <?= htmlspecialchars($d['nama_lab']) ?>
+                                            </p>
+
+                                            <p class="report-meta">
+                                                📅 <?= htmlspecialchars($d['tanggal_pinjam']) ?><br>
+                                                🕐 <?= htmlspecialchars($d['jam_mulai']) ?> - <?= htmlspecialchars($d['jam_selesai']) ?><br>
+                                                📝 <?= htmlspecialchars($d['keperluan']) ?>
+                                            </p>
+                                        </div>
+
+                                        <span class="badge-report <?= htmlspecialchars($d['status']) ?>">
+                                            <?= htmlspecialchars(ucfirst($d['status'])) ?>
+                                        </span>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
-        </div>
-        <?php } ?>
 
-    </div>
+            <!-- Bottom Nav -->
+            <nav class="bottom-nav-modern">
+                <a href="dashboard.php">Beranda</a>
+                <a href="jadwal.php">Jadwal</a>
+                <a href="laporan.php" class="active">Laporan</a>
+                <a href="kelola.php">Kelola</a>
+                <a href="kelola_user.php">User</a>
+                <a href="../logout.php">Logout</a>
+            </nav>
 
-    <div class="bottom-nav">
-        <a href="dashboard.php" class="nav-item">Beranda</a>
-        <a href="jadwal.php" class="nav-item">Jadwal</a>
-        <a href="laporan.php" class="nav-item active-nav">Laporan</a>
-        <a href="kelola.php" class="nav-item">Kelola</a>
-        <a href="kelola_user.php" class="nav-item">User</a>
-        <a href="../logout.php" class="nav-item">Logout</a>
-    </div>
-
-</div>
+        </section>
+    </main>
 
 </body>
+
 </html>

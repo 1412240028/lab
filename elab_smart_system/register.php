@@ -1,39 +1,40 @@
 <?php
 session_start();
 
-if(isset($_SESSION['role'])){
+if (isset($_SESSION['role'])) {
     header("Location: login.php");
     exit;
 }
 
 include 'koneksi.php';
 
-if(isset($_POST['daftar'])){
+if (isset($_POST['daftar'])) {
     $nama = trim($_POST['nama']);
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
     $konfirmasi = trim($_POST['konfirmasi']);
 
-    // Cek password cocok
-    if($password !== $konfirmasi){
+    if ($password !== $konfirmasi) {
         $error = "Password dan konfirmasi tidak cocok";
     } else {
-        // Cek email sudah terdaftar
-        $cek = mysqli_prepare($conn,"SELECT * FROM users WHERE email=?");
+        $cek = mysqli_prepare($conn, "SELECT * FROM users WHERE email=?");
         mysqli_stmt_bind_param($cek, "s", $email);
         mysqli_stmt_execute($cek);
         $hasil = mysqli_stmt_get_result($cek);
 
-        if(mysqli_num_rows($hasil) > 0){
+        if (mysqli_num_rows($hasil) > 0) {
             $error = "Email sudah terdaftar";
         } else {
             $hash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = mysqli_prepare($conn,"
+
+            $stmt = mysqli_prepare($conn, "
                 INSERT INTO users(nama, email, password, role)
                 VALUES(?, ?, ?, 'mahasiswa')
             ");
+
             mysqli_stmt_bind_param($stmt, "sss", $nama, $email, $hash);
             mysqli_stmt_execute($stmt);
+
             $success = "Registrasi berhasil! Silakan login.";
         }
     }
@@ -41,60 +42,115 @@ if(isset($_POST['daftar'])){
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="id">
+
 <head>
-    <title>Registrasi E-Lab</title>
+    <title>Registrasi - E-Lab Smart System</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body{ background:#efefef; font-family:Arial; }
-        .register-box{
-            max-width:400px; margin:auto; margin-top:60px;
-            background:white; padding:30px;
-            border-radius:20px; box-shadow:0 2px 10px rgba(0,0,0,0.1);
-        }
-        .btn-ungu{ background:#4b2ea7; color:white; }
-    </style>
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- E-Lab UI -->
+    <link rel="stylesheet" href="assets/css/elab-ui.css">
 </head>
+
 <body>
 
-<div class="register-box">
-    <h3 class="text-center mb-4">Daftar Akun</h3>
+    <main class="elab-page">
+        <section class="elab-phone">
 
-    <?php if(isset($error)){ ?>
-        <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
-    <?php } ?>
+            <div class="auth-hero">
+                <div class="auth-logo">
+                    <img src="assets/images/E-Lab System Logo.jpg" alt="E-Lab Smart System Logo">
+                </div>
+                <h1>Buat Akun Baru</h1>
+                <p>Daftar sebagai mahasiswa untuk mengajukan peminjaman lab</p>
+            </div>
 
-    <?php if(isset($success)){ ?>
-        <div class="alert alert-success"><?= $success ?></div>
-    <?php } ?>
+            <div class="auth-card">
 
-    <form method="POST">
-        <div class="mb-3">
-            <input type="text" name="nama" class="form-control"
-                placeholder="Nama Lengkap" required
-                value="<?= isset($_POST['nama']) ? htmlspecialchars($_POST['nama']) : '' ?>">
-        </div>
-        <div class="mb-3">
-            <input type="email" name="email" class="form-control"
-                placeholder="Email" required
-                value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>">
-        </div>
-        <div class="mb-3">
-            <input type="password" name="password" class="form-control"
-                placeholder="Password" required>
-        </div>
-        <div class="mb-3">
-            <input type="password" name="konfirmasi" class="form-control"
-                placeholder="Konfirmasi Password" required>
-        </div>
-        <button type="submit" name="daftar" class="btn btn-ungu w-100">Daftar</button>
-    </form>
+                <div class="auth-tabs">
+                    <a href="login.php" class="auth-tab">Masuk</a>
+                    <a href="register.php" class="auth-tab active">Daftar</a>
+                </div>
 
-    <div class="text-center mt-3">
-        <a href="login.php" style="color:#4b2ea7;">Sudah punya akun? Login</a>
-    </div>
-</div>
+                <?php if (isset($error)) { ?>
+                    <div class="alert alert-danger mb-3">
+                        <?= htmlspecialchars($error) ?>
+                    </div>
+                <?php } ?>
+
+                <?php if (isset($success)) { ?>
+                    <div class="alert alert-success mb-3">
+                        <?= htmlspecialchars($success) ?>
+                    </div>
+                <?php } ?>
+
+                <form method="POST" autocomplete="off">
+
+                    <div class="mb-3">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input
+                            type="text"
+                            name="nama"
+                            class="form-control"
+                            placeholder="Masukkan nama lengkap"
+                            required
+                            value="<?= isset($_POST['nama']) ? htmlspecialchars($_POST['nama']) : '' ?>">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            class="form-control"
+                            placeholder="Masukkan email aktif"
+                            required
+                            value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            class="form-control"
+                            placeholder="Buat password"
+                            required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Konfirmasi Password</label>
+                        <input
+                            type="password"
+                            name="konfirmasi"
+                            class="form-control"
+                            placeholder="Ulangi password"
+                            required>
+                    </div>
+
+                    <button type="submit" name="daftar" class="btn-elab btn-primary-elab w-100">
+                        Daftar Akun →
+                    </button>
+
+                    <p class="auth-helper">
+                        Sudah punya akun?
+                        <a href="login.php">Masuk sekarang</a>
+                    </p>
+
+                </form>
+
+            </div>
+
+        </section>
+    </main>
 
 </body>
+
 </html>
