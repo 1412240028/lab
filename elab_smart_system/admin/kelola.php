@@ -134,6 +134,7 @@ if(isset($_GET['edit'])){
         <a href="jadwal.php" class="nav-item">Jadwal</a>
         <a href="laporan.php" class="nav-item">Laporan</a>
         <a href="kelola.php" class="nav-item active-nav">Kelola</a>
+        <a href="kelola_user.php" class="nav-item">User</a>
         <a href="../logout.php" class="nav-item">Logout</a>
     </div>
 

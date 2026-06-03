@@ -336,6 +336,7 @@ $inisial = strtoupper(substr($namaAdmin, 0, 2));
             <a href="jadwal.php" class="nav-item" style="text-decoration:none;">Jadwal</a>
             <a href="laporan.php" class="nav-item" style="text-decoration:none;">Laporan</a>
             <a href="kelola.php" class="nav-item" style="text-decoration:none;">Kelola</a>
+            <a href="kelola_user.php" class="nav-item" style="text-decoration:none;">User</a>
             <a href="../logout.php" class="nav-item">Logout</a>
         </div>
 
