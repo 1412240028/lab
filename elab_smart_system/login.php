@@ -60,6 +60,11 @@ if (isset($_POST['login'])) {
                             exit;
                         }
 
+                        if ($data['role'] === 'dosen') {
+                            header("Location: dosen/dashboard.php");
+                            exit;
+                        }
+
                         $error = "Role tidak valid. Hubungi administrator.";
                     } else {
                         $error = "Email atau password salah";

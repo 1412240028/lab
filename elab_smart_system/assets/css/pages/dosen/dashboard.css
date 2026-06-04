@@ -1,43 +1,265 @@
 /* =========================================================
-   Lecturer Dashboard
+   Dosen Dashboard
    ========================================================= */
 
-.lecturer-hero-card {
+.dosen-page {
     background:
-        linear-gradient(135deg, rgba(15, 139, 99, 0.10), rgba(0, 212, 255, 0.07));
-    border: 1px solid rgba(15, 139, 99, 0.16);
-    border-radius: 24px;
-    padding: 18px;
-    margin-bottom: 18px;
+        radial-gradient(circle at top left, rgba(0, 212, 255, 0.12), transparent 32%),
+        linear-gradient(135deg, #f8fafc, #eef4ff);
+}
+
+.dosen-container {
+    overflow: hidden;
+}
+
+.dosen-header {
+    min-height: auto;
+    padding: 28px 28px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    background:
+        radial-gradient(circle at top right, rgba(0, 212, 255, 0.20), transparent 34%),
+        linear-gradient(135deg, rgba(15, 139, 99, 0.96), rgba(15, 98, 254, 0.88));
+    color: #ffffff;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+.dosen-header-label {
+    margin: 0 0 8px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.dosen-header h1 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 950;
+    letter-spacing: -0.7px;
+}
+
+.dosen-header-subtitle {
+    margin: 8px 0 0;
+    max-width: 620px;
+    color: rgba(255, 255, 255, 0.84);
+    font-size: 14px;
+    line-height: 1.6;
+    font-weight: 600;
+}
+
+.dosen-avatar {
+    width: 62px;
+    height: 62px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.94);
+    color: var(--lecturer-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 950;
+    flex-shrink: 0;
+    box-shadow:
+        0 16px 34px rgba(15, 23, 42, 0.18),
+        0 0 0 7px rgba(255, 255, 255, 0.15);
+}
+
+.dosen-body {
+    padding-top: 24px;
+}
+
+.lecturer-hero-card {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at top right, rgba(0, 212, 255, 0.20), transparent 34%),
+        linear-gradient(135deg, rgba(15, 139, 99, 0.13), rgba(15, 98, 254, 0.08));
+    border: 1px solid rgba(15, 139, 99, 0.18);
+    border-radius: 28px;
+    padding: 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+}
+
+.lecturer-hero-card::before {
+    content: "";
+    position: absolute;
+    right: -42px;
+    top: -42px;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: rgba(15, 139, 99, 0.12);
 }
 
 .lecturer-hero-card h2 {
-    margin: 0 0 6px;
+    position: relative;
+    margin: 0 0 8px;
     color: var(--lecturer-green);
-    font-size: 17px;
-    font-weight: 900;
+    font-size: 20px;
+    font-weight: 950;
+    letter-spacing: -0.4px;
 }
 
 .lecturer-hero-card p {
+    position: relative;
     margin: 0;
+    max-width: 720px;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.65;
+    font-weight: 600;
+}
+
+.dosen-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.dosen-stat-card {
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    border-radius: 22px;
+    padding: 18px;
+    box-shadow: var(--shadow-card);
+}
+
+.dosen-stat-card::after {
+    content: "";
+    position: absolute;
+    right: -26px;
+    top: -26px;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: rgba(15, 98, 254, 0.08);
+}
+
+.dosen-stat-card span {
+    display: block;
+    margin-bottom: 8px;
     color: var(--text-muted);
     font-size: 13px;
-    line-height: 1.5;
+    font-weight: 800;
+}
+
+.dosen-stat-card strong {
+    color: var(--text-main);
+    font-size: 26px;
+    font-weight: 950;
 }
 
 .lecturer-layout {
     display: grid;
     grid-template-columns: 1fr;
     gap: 18px;
+    margin-top: 18px;
 }
 
-.profile-circle.lecturer {
+.lecturer-quick-panel {
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    border-radius: 26px;
+    padding: 22px;
+    box-shadow: var(--shadow-card);
+}
+
+.lecturer-quick-panel h2 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    font-weight: 950;
+    color: var(--text-main);
+}
+
+.lecturer-quick-panel p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.65;
+    font-weight: 600;
+}
+
+.lecturer-action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+/* Bottom Nav Dosen */
+.bottom-nav-modern.bottom-nav-dosen {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 620px;
+    width: calc(100% - 56px);
+    min-height: 66px;
+}
+
+.bottom-nav-modern.bottom-nav-dosen a {
+    min-height: 50px;
+    border-radius: 18px;
+    font-size: 12px;
+}
+
+.bottom-nav-modern.bottom-nav-dosen a.active {
+    background: rgba(15, 139, 99, 0.13);
     color: var(--lecturer-green);
 }
 
 @media (min-width: 900px) {
     .lecturer-layout {
-        grid-template-columns: 0.9fr 1.1fr;
-        align-items: start;
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 768px) {
+    .dosen-header {
+        align-items: flex-start;
+    }
+
+    .dosen-stat-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .dosen-header {
+        padding: 24px 20px 22px;
+        border-bottom-left-radius: 26px;
+        border-bottom-right-radius: 26px;
+    }
+
+    .dosen-header h1 {
+        font-size: 24px;
+    }
+
+    .dosen-avatar {
+        width: 54px;
+        height: 54px;
+        border-radius: 18px;
+    }
+
+    .lecturer-action-row {
+        grid-template-columns: 1fr;
+    }
+
+    .bottom-nav-modern.bottom-nav-dosen {
+        width: calc(100% - 24px);
+        bottom: 12px;
+    }
+
+    .bottom-nav-modern.bottom-nav-dosen a {
+        font-size: 11px;
+        min-height: 48px;
+        border-radius: 15px;
     }
 }
