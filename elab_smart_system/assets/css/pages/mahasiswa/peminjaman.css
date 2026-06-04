@@ -1,0 +1,104 @@
+/* =========================================================
+   Mahasiswa Peminjaman
+   ========================================================= */
+
+.loan-form-panel {
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    border-radius: 26px;
+    padding: 20px;
+    box-shadow: var(--shadow-card);
+}
+
+.student-cta {
+    min-height: 58px;
+    border: none;
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+    color: #ffffff;
+    font-weight: 900;
+    box-shadow: 0 14px 28px rgba(15, 98, 254, 0.22);
+}
+
+.student-cta:hover {
+    color: #ffffff;
+}
+
+.student-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.student-history-card {
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    border-radius: 24px;
+    padding: 17px;
+    box-shadow: var(--shadow-card);
+}
+
+.student-history-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.history-lab-name {
+    margin: 0 0 7px;
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--text-main);
+}
+
+.history-meta {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.55;
+    font-weight: 600;
+}
+
+.badge-loan {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 7px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.badge-loan.menunggu {
+    background: var(--warning-soft);
+    color: #b45309;
+}
+
+.badge-loan.disetujui {
+    background: var(--success-soft);
+    color: var(--success);
+}
+
+.badge-loan.ditolak {
+    background: var(--danger-soft);
+    color: var(--danger);
+}
+
+@media (min-width: 900px) {
+    .loan-form-panel {
+        position: sticky;
+        top: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .student-history-top {
+        flex-direction: column;
+    }
+
+    .badge-loan {
+        align-self: flex-start;
+    }
+}

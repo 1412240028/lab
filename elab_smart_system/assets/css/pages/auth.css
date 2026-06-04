@@ -1,0 +1,124 @@
+/* ===============================
+   Auth Page
+   =============================== */
+
+.auth-hero {
+    min-height: 260px;
+    padding: 38px 28px 34px;
+    color: #ffffff;
+    text-align: center;
+    background:
+        linear-gradient(135deg, rgba(15, 98, 254, 0.94), rgba(64, 49, 143, 0.96)),
+        radial-gradient(circle at 30% 20%, rgba(0, 212, 255, 0.35), transparent 30%);
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.12) 45%, transparent 60%),
+        repeating-linear-gradient(
+            135deg,
+            rgba(255,255,255,0.06) 0px,
+            rgba(255,255,255,0.06) 1px,
+            transparent 1px,
+            transparent 18px
+        );
+    opacity: 0.7;
+}
+
+.auth-logo {
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+    position: relative;
+    z-index: 1;
+    box-shadow: 
+        0 12px 30px rgba(0, 0, 0, 0.18),
+        0 0 0 6px rgba(255, 255, 255, 0.14),
+        0 0 28px rgba(0, 212, 255, 0.28);
+    overflow: hidden;
+}
+
+.auth-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.auth-hero h1,
+.auth-hero h2,
+.auth-hero p {
+    position: relative;
+    z-index: 1;
+}
+
+.auth-hero h1 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.auth-hero p {
+    margin: 8px 0 0;
+    font-size: 15px;
+    color: rgba(255,255,255,0.86);
+}
+
+.auth-card {
+    padding: 24px;
+}
+
+.auth-tabs {
+    background: #f3f4f6;
+    border-radius: 999px;
+    padding: 6px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 24px;
+}
+
+.auth-tab {
+    border-radius: 999px;
+    padding: 12px;
+    text-align: center;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-decoration: none;
+}
+
+.auth-tab.active {
+    background: #ffffff;
+    color: var(--text-main);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
+.auth-helper {
+    color: var(--text-muted);
+    font-size: 14px;
+    text-align: center;
+    margin-top: 18px;
+}
+
+.auth-helper a {
+    color: var(--primary-blue);
+    font-weight: 800;
+    text-decoration: none;
+}
+
+@media (max-width: 480px) {
+    .auth-hero {
+        border-bottom-left-radius: 32px;
+        border-bottom-right-radius: 32px;
+    }
+}

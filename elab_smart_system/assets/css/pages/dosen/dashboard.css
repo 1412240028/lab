@@ -1,0 +1,43 @@
+/* =========================================================
+   Lecturer Dashboard
+   ========================================================= */
+
+.lecturer-hero-card {
+    background:
+        linear-gradient(135deg, rgba(15, 139, 99, 0.10), rgba(0, 212, 255, 0.07));
+    border: 1px solid rgba(15, 139, 99, 0.16);
+    border-radius: 24px;
+    padding: 18px;
+    margin-bottom: 18px;
+}
+
+.lecturer-hero-card h2 {
+    margin: 0 0 6px;
+    color: var(--lecturer-green);
+    font-size: 17px;
+    font-weight: 900;
+}
+
+.lecturer-hero-card p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.lecturer-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+
+.profile-circle.lecturer {
+    color: var(--lecturer-green);
+}
+
+@media (min-width: 900px) {
+    .lecturer-layout {
+        grid-template-columns: 0.9fr 1.1fr;
+        align-items: start;
+    }
+}

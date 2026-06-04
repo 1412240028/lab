@@ -1,0 +1,172 @@
+/* =========================================================
+   Admin Kelola User
+   ========================================================= */
+
+.user-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+
+.user-form-panel {
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    border-radius: 26px;
+    padding: 20px;
+    box-shadow: var(--shadow-card);
+}
+
+.user-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.user-card-modern {
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    border-radius: 24px;
+    padding: 17px;
+    box-shadow: var(--shadow-card);
+}
+
+.user-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.user-identity {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.user-avatar-mini {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background:
+        linear-gradient(135deg, rgba(64, 49, 143, 0.12), rgba(0, 212, 255, 0.12));
+    color: var(--admin-purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    flex-shrink: 0;
+}
+
+.user-name {
+    margin: 0 0 4px;
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--text-main);
+}
+
+.user-email {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+.role-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 7px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.role-pill.admin {
+    background: rgba(64, 49, 143, 0.12);
+    color: var(--admin-purple);
+}
+
+.role-pill.mahasiswa {
+    background: rgba(15, 98, 254, 0.10);
+    color: var(--primary-blue);
+}
+
+.role-pill.dosen {
+    background: rgba(15, 139, 99, 0.12);
+    color: var(--lecturer-green);
+}
+
+.user-actions {
+    margin-top: 14px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.current-user-label {
+    display: inline-flex;
+    min-height: 38px;
+    padding: 0 14px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: #f1f5f9;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.user-info-box {
+    background:
+        linear-gradient(135deg, rgba(64, 49, 143, 0.08), rgba(15, 98, 254, 0.06));
+    border: 1px solid rgba(64, 49, 143, 0.12);
+    border-radius: 24px;
+    padding: 18px;
+    margin-bottom: 18px;
+}
+
+.user-info-box h2 {
+    margin: 0 0 6px;
+    color: var(--admin-purple);
+    font-size: 16px;
+    font-weight: 900;
+}
+
+.user-info-box p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+@media (min-width: 900px) {
+    .user-layout {
+        grid-template-columns: 0.85fr 1.15fr;
+        align-items: start;
+    }
+
+    .user-form-panel {
+        position: sticky;
+        top: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-card-top {
+        flex-direction: column;
+    }
+
+    .role-pill {
+        align-self: flex-start;
+    }
+
+    .user-actions {
+        justify-content: stretch;
+    }
+
+    .btn-user-delete,
+    .current-user-label {
+        width: 100%;
+    }
+}

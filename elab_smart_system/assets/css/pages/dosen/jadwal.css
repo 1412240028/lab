@@ -1,0 +1,70 @@
+/* =========================================================
+   Lecturer Jadwal
+   ========================================================= */
+
+.lecturer-schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.lecturer-schedule-card {
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    border-radius: 24px;
+    padding: 18px;
+    box-shadow: var(--shadow-card);
+}
+
+.lecturer-schedule-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.lecturer-schedule-title {
+    margin: 0 0 8px;
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--text-main);
+}
+
+.lecturer-schedule-meta {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.65;
+    font-weight: 600;
+}
+
+.lecturer-schedule-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 11px;
+    border-radius: 999px;
+    background: rgba(15, 139, 99, 0.12);
+    color: var(--lecturer-green);
+    font-size: 12px;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+@media (min-width: 900px) {
+    .lecturer-schedule-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: start;
+    }
+}
+
+@media (max-width: 480px) {
+    .lecturer-schedule-top {
+        flex-direction: column;
+    }
+
+    .lecturer-schedule-chip {
+        align-self: flex-start;
+    }
+}

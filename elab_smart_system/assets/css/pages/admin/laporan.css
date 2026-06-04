@@ -1,0 +1,176 @@
+/* =========================================================
+   Admin Laporan
+   ========================================================= */
+
+.report-page-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.report-filter-panel {
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    border-radius: 26px;
+    padding: 20px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 20px;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+}
+
+.report-filter-panel .form-control,
+.report-filter-panel .form-select {
+    width: 100%;
+    min-width: 0;
+}
+
+.report-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.export-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.report-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.report-card-modern {
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    border-radius: 24px;
+    padding: 18px;
+    box-shadow: var(--shadow-card);
+}
+
+.report-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.report-user {
+    margin: 0 0 6px;
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--text-main);
+}
+
+.report-lab {
+    margin: 0 0 8px;
+    font-size: 13px;
+    color: var(--admin-purple);
+    font-weight: 850;
+}
+
+.report-meta {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.55;
+    font-weight: 600;
+}
+
+.badge-report {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 7px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.badge-report.menunggu {
+    background: var(--warning-soft);
+    color: #b45309;
+}
+
+.badge-report.disetujui {
+    background: var(--success-soft);
+    color: var(--success);
+}
+
+.badge-report.ditolak {
+    background: var(--danger-soft);
+    color: var(--danger);
+}
+
+.report-summary {
+    background:
+        linear-gradient(135deg, rgba(64, 49, 143, 0.08), rgba(0, 212, 255, 0.07));
+    border: 1px solid rgba(64, 49, 143, 0.12);
+    border-radius: 24px;
+    padding: 18px;
+    margin-bottom: 18px;
+}
+
+.report-summary h2 {
+    margin: 0 0 6px;
+    color: var(--admin-purple);
+    font-size: 16px;
+    font-weight: 900;
+}
+
+.report-summary p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+@media (min-width: 520px) {
+    .report-actions,
+    .export-actions {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 900px) {
+    .report-page-grid {
+        grid-template-columns: 420px 1fr;
+        gap: 24px;
+    }
+
+    .filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .report-filter-panel {
+        position: sticky;
+        top: 24px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .report-page-grid {
+        grid-template-columns: 460px 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .report-card-top {
+        flex-direction: column;
+    }
+
+    .badge-report {
+        align-self: flex-start;
+    }
+}

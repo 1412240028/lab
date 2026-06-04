@@ -1,0 +1,56 @@
+🗂️ Refactor Planning — elab-ui.css
+✅ Fase 0 — Persiapan (sebelum mulai)
+Jangan langsung hapus/edit file lama dulu.
+
+ Backup elab-ui.css → rename jadi elab-ui.OLD.css, simpen di folder yang sama
+ Buat struktur folder css/ seperti saran sebelumnya
+ Buat file main.css kosong sebagai entry point
+ Di semua file HTML/PHP, ganti <link href="elab-ui.css"> jadi <link href="css/main.css">
+ Test dulu — pastiin tampilannya masih oke (karena main.css masih kosong, tampilan bakal rusak sementara, itu normal)
+
+
+🔧 Fase 1 — Base & Global (mulai dari sini)
+Ini fondasi, harus selesai duluan sebelum lanjut ke fase lain.
+Target file:
+
+css/base/variables.css → cut semua isi blok :root { } dari file lama
+css/base/global.css → cut * { } dan body { } dari file lama
+
+Di main.css tambahkan:
+css@import "base/variables.css";
+@import "base/global.css";
+Test di browser → background dan font harus muncul normal.
+
+🧩 Fase 2 — Components (shared / reusable)
+Ini bagian yang dipakai semua role, jadi selesaikan sebelum masuk ke halaman spesifik.
+Urutan pengerjaannya:
+FileClass yang dipindahcomponents/buttons.css.btn-elab, .btn-primary-elab, .btn-purple-elab, .btn-action, .btn-approve, .btn-rejectcomponents/forms.css.form-label, .form-control, .form-select, .input-group-moderncomponents/cards.css.panel-card, .stat-box, .stat-grid, .request-card-moderncomponents/badges.css.badge-status, .role-badge-modern, .badge-notification, .role-chipcomponents/alerts.css.alert, .alert-danger, .alert-success
+Setiap selesai satu file, langsung @import ke main.css dan test browser.
+
+🏗️ Fase 3 — Layout & Navigation
+
+layout/shell.css → .elab-page, .elab-phone, .app-shell, .app-container, .app-header, .app-body
+layout/navigation.css → .bottom-nav-modern beserta responsive-nya
+
+
+📄 Fase 4 — Pages (per halaman)
+Ini yang paling banyak, tapi kalau fase 1–3 udah beres, ini tinggal cut-paste per section.
+Urutan yang disarankan:
+
+pages/auth.css — karena paling standalone, gak bergantung banyak ke role
+pages/student/ — dashboard, notifikasi, profil, history, peminjaman
+pages/lecturer/ — dashboard, jadwal, verifikasi
+pages/admin/ — dashboard, kelola lab, jadwal, users
+
+
+🧹 Fase 5 — Cleanup
+
+Cek elab-ui.OLD.css → pastiin semua class udah dipindah (harusnya udah kosong kalau cut bukan copy)
+Hapus elab-ui.OLD.css
+Test semua halaman sekali lagi dari awal
+
+
+💡 Tips selama refactor
+Cara kerja yang aman: gunakan cut (bukan copy) setiap mindahin class. Jadi kalau ada yang ketinggalan, masih keliatan di file lama.
+Cara cek apakah ada yang ketinggalan: buka DevTools browser → Inspect element yang tampilannya aneh → lihat di tab Styles, CSS-nya dari file mana. Kalau masih dari elab-ui.OLD.css, berarti belum dipindah.
+Jangan refactor sambil nambahin fitur baru — pisahkan dua kegiatan itu biar gak bingung kalau ada bug.

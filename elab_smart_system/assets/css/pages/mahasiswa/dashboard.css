@@ -1,0 +1,132 @@
+/* =========================================================
+   Mahasiswa Dashboard
+   ========================================================= */
+
+.student-hero-card {
+    background:
+        linear-gradient(135deg, rgba(15, 98, 254, 0.10), rgba(0, 212, 255, 0.08));
+    border: 1px solid rgba(15, 98, 254, 0.16);
+    border-radius: 24px;
+    padding: 18px;
+    margin-bottom: 18px;
+}
+
+.student-hero-card h2 {
+    margin: 0 0 6px;
+    color: var(--primary-blue);
+    font-size: 17px;
+    font-weight: 900;
+}
+
+.student-hero-card p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.student-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+
+.profile-circle.student {
+    color: var(--primary-blue);
+}
+
+.quick-lab-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.quick-lab-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: var(--shadow-card);
+}
+
+.quick-lab-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 16px;
+    background:
+        linear-gradient(135deg, rgba(15, 98, 254, 0.16), rgba(0, 212, 255, 0.14));
+    flex-shrink: 0;
+}
+
+.quick-lab-item h3 {
+    margin: 0 0 4px;
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.quick-lab-item p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Bottom Nav Mahasiswa */
+.bottom-nav-modern.bottom-nav-student {
+    grid-template-columns: repeat(5, 1fr);
+    max-width: 640px;
+    width: 640px;
+    padding: 8px;
+}
+
+.bottom-nav-modern.bottom-nav-student a {
+    min-height: 52px;
+    border-radius: 18px;
+    font-size: 13px;
+}
+
+.bottom-nav-modern.bottom-nav-student a.active {
+    background: rgba(15, 98, 254, 0.12);
+    color: var(--primary-blue);
+}
+
+/* Desktop */
+@media (min-width: 900px) {
+    .student-layout {
+        grid-template-columns: 0.9fr 1.1fr;
+        align-items: start;
+    }
+
+    .bottom-nav-modern.bottom-nav-student {
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 640px;
+        width: 640px;
+    }
+}
+
+/* Tablet */
+@media (max-width: 899px) {
+    .bottom-nav-modern.bottom-nav-student {
+        width: calc(100% - 40px);
+        max-width: 520px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .bottom-nav-modern.bottom-nav-student {
+        width: calc(100% - 24px);
+        max-width: none;
+        bottom: 12px;
+    }
+
+    .bottom-nav-modern.bottom-nav-student a {
+        font-size: 11px;
+        min-height: 48px;
+        border-radius: 15px;
+    }
+}

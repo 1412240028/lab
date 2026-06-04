@@ -1,0 +1,100 @@
+/* =========================================================
+   Mahasiswa Riwayat
+   ========================================================= */
+
+.history-page-info {
+    background:
+        linear-gradient(135deg, rgba(15, 98, 254, 0.10), rgba(0, 212, 255, 0.07));
+    border: 1px solid rgba(15, 98, 254, 0.16);
+    border-radius: 24px;
+    padding: 18px;
+    margin-bottom: 18px;
+}
+
+.history-page-info h2 {
+    margin: 0 0 6px;
+    color: var(--primary-blue);
+    font-size: 17px;
+    font-weight: 900;
+}
+
+.history-page-info p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.history-page-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.history-page-card {
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    border-radius: 24px;
+    padding: 18px;
+    box-shadow: var(--shadow-card);
+}
+
+.history-page-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.history-page-title {
+    margin: 0 0 8px;
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--text-main);
+}
+
+.history-page-meta {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.65;
+    font-weight: 600;
+}
+
+.history-status-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.history-date-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 11px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 850;
+    white-space: nowrap;
+}
+
+@media (min-width: 900px) {
+    .history-page-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: start;
+    }
+}
+
+@media (max-width: 480px) {
+    .history-page-top {
+        flex-direction: column;
+    }
+
+    .history-status-wrap {
+        align-items: flex-start;
+    }
+}

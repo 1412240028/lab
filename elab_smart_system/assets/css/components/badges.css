@@ -1,0 +1,114 @@
+.badge-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 7px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.badge-status.available {
+    background: var(--success-soft);
+    color: var(--success);
+}
+
+.badge-status.unavailable {
+    background: var(--danger-soft);
+    color: var(--danger);
+}
+
+.role-badge-modern {
+    display: inline-flex;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(64, 49, 143, 0.10);
+    color: var(--admin-purple);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.badge-notification {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 7px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.badge-notification.disetujui {
+    background: var(--success-soft);
+    color: var(--success);
+}
+
+.badge-notification.ditolak {
+    background: var(--danger-soft);
+    color: var(--danger);
+}
+
+.role-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.role-chip {
+    border-radius: 16px;
+    padding: 12px 10px;
+    font-size: 13px;
+    font-weight: 800;
+    text-align: center;
+    border: 1px solid transparent;
+}
+
+.role-chip.student {
+    color: var(--primary-blue-dark);
+    background: rgba(15, 98, 254, 0.10);
+    border-color: rgba(15, 98, 254, 0.25);
+}
+
+.role-chip.lecturer {
+    color: var(--lecturer-green-dark);
+    background: rgba(15, 139, 99, 0.12);
+    border-color: rgba(15, 139, 99, 0.25);
+}
+
+.role-chip.admin {
+    color: var(--admin-purple-dark);
+    background: rgba(64, 49, 143, 0.12);
+    border-color: rgba(64, 49, 143, 0.25);
+}
+
+.unread-label {
+    display: inline-flex;
+    margin-top: 10px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: rgba(15, 98, 254, 0.10);
+    color: var(--primary-blue);
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-flex;
+    margin-right: 10px;
+}
+
+.status-dot.green {
+    background: var(--success);
+    box-shadow: 0 0 0 5px rgba(15, 139, 99, 0.12);
+}
+
+.status-dot.red {
+    background: var(--danger);
+    box-shadow: 0 0 0 5px rgba(220, 38, 38, 0.12);
+}

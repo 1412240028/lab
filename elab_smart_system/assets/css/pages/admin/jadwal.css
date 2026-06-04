@@ -1,0 +1,70 @@
+/* =========================================================
+   Admin Jadwal / Lab Cards
+   ========================================================= */
+
+.lab-card-modern {
+    background: #ffffff;
+    border: 1px solid var(--border-soft);
+    border-radius: 24px;
+    padding: 18px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 16px;
+    transition: 0.2s ease;
+}
+
+.lab-card-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+}
+
+.lab-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.lab-card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 10px;
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--text-main);
+}
+
+.lab-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.meta-line {
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.lab-summary-box {
+    background:
+        linear-gradient(135deg, rgba(64, 49, 143, 0.08), rgba(15, 98, 254, 0.06));
+    border: 1px solid rgba(64, 49, 143, 0.12);
+    border-radius: 24px;
+    padding: 18px;
+    margin-bottom: 18px;
+}
+
+.lab-summary-title {
+    margin: 0 0 6px;
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--admin-purple);
+}
+
+.lab-summary-text {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}

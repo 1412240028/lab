@@ -1,0 +1,44 @@
+.alert {
+    border: none;
+    border-radius: 16px;
+    font-size: 14px;
+}
+
+.alert-danger {
+    background: var(--danger-soft);
+    color: #991b1b;
+}
+
+.alert-success {
+    background: var(--success-soft);
+    color: #166534;
+}
+
+.password-note {
+    background: rgba(245, 158, 11, 0.10);
+    border: 1px solid rgba(245, 158, 11, 0.20);
+    color: #92400e;
+    border-radius: 16px;
+    padding: 12px 14px;
+    font-size: 12px;
+    line-height: 1.5;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0 14px;
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: var(--border-soft);
+}

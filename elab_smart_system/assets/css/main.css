@@ -1,0 +1,44 @@
+/* ===============================
+   Base
+   =============================== */
+@import "base/variables.css";
+@import "base/global.css";
+
+/* ===============================
+   Components
+   =============================== */
+@import "components/buttons.css";
+@import "components/forms.css";
+@import "components/cards.css";
+@import "components/badges.css";
+@import "components/alerts.css";
+
+/* ===============================
+   Layout
+   =============================== */
+@import "layout/shell.css";
+@import "layout/navigation.css";
+
+/* ===============================
+   Pages
+   =============================== */
+@import "pages/auth.css";
+
+/* Mahasiswa */
+@import "pages/mahasiswa/dashboard.css";
+@import "pages/mahasiswa/peminjaman.css";
+@import "pages/mahasiswa/history.css";
+@import "pages/mahasiswa/notifikasi.css";
+@import "pages/mahasiswa/profil.css";
+
+/* Dosen */
+@import "pages/dosen/dashboard.css";
+@import "pages/dosen/jadwal.css";
+@import "pages/dosen/verifikasi.css";
+
+/* Admin */
+@import "pages/admin/dashboard.css";
+@import "pages/admin/kelola-lab.css";
+@import "pages/admin/jadwal.css";
+@import "pages/admin/users.css";
+@import "pages/admin/laporan.css";

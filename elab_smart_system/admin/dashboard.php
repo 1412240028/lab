@@ -64,7 +64,7 @@ $inisial = strtoupper(substr($namaAdmin, 0, 2));
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- E-Lab UI -->
-    <link rel="stylesheet" href="../assets/css/elab-ui.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
 </head>
 
 <body>
