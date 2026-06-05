@@ -31,10 +31,6 @@
     gap: 18px;
 }
 
-.profile-circle.student {
-    color: var(--primary-blue);
-}
-
 .quick-lab-list {
     display: flex;
     flex-direction: column;
@@ -74,59 +70,10 @@
     font-weight: 600;
 }
 
-/* Bottom Nav Mahasiswa */
-.bottom-nav-modern.bottom-nav-student {
-    grid-template-columns: repeat(5, 1fr);
-    max-width: 640px;
-    width: 640px;
-    padding: 8px;
-}
-
-.bottom-nav-modern.bottom-nav-student a {
-    min-height: 52px;
-    border-radius: 18px;
-    font-size: 13px;
-}
-
-.bottom-nav-modern.bottom-nav-student a.active {
-    background: rgba(15, 98, 254, 0.12);
-    color: var(--primary-blue);
-}
-
 /* Desktop */
 @media (min-width: 900px) {
     .student-layout {
         grid-template-columns: 0.9fr 1.1fr;
         align-items: start;
-    }
-
-    .bottom-nav-modern.bottom-nav-student {
-        left: 50%;
-        transform: translateX(-50%);
-        max-width: 640px;
-        width: 640px;
-    }
-}
-
-/* Tablet */
-@media (max-width: 899px) {
-    .bottom-nav-modern.bottom-nav-student {
-        width: calc(100% - 40px);
-        max-width: 520px;
-    }
-}
-
-/* Mobile */
-@media (max-width: 480px) {
-    .bottom-nav-modern.bottom-nav-student {
-        width: calc(100% - 24px);
-        max-width: none;
-        bottom: 12px;
-    }
-
-    .bottom-nav-modern.bottom-nav-student a {
-        font-size: 11px;
-        min-height: 48px;
-        border-radius: 15px;
     }
 }
