@@ -82,7 +82,8 @@ $inisial = strtoupper(substr($namaMahasiswa, 0, 2));
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
     <!-- E-Lab UI -->
     <link rel="stylesheet" href="../assets/css/main.css">
@@ -111,6 +112,18 @@ $inisial = strtoupper(substr($namaMahasiswa, 0, 2));
             </header>
 
             <div class="app-body">
+                
+                <?php if (isset($_GET['success'])) { ?>
+                    <div class="alert alert-success mb-3">
+                        <?= htmlspecialchars($_GET['success']) ?>
+                    </div>
+                <?php } ?>
+
+                <?php if (isset($_GET['error'])) { ?>
+                    <div class="alert alert-danger mb-3">
+                        <?= htmlspecialchars($_GET['error']) ?>
+                    </div>
+                <?php } ?>
 
                 <!-- Ringkasan -->
                 <div class="section-label">Ringkasan Saya</div>
@@ -144,7 +157,8 @@ $inisial = strtoupper(substr($namaMahasiswa, 0, 2));
                         <div class="student-hero-card">
                             <h2>Ajukan Peminjaman Lab</h2>
                             <p>
-                                Pilih laboratorium, tanggal, jam, dan keperluan. Sistem akan mengecek bentrok jadwal saat pengajuan dikirim.
+                                Pilih laboratorium, tanggal, jam, dan keperluan. Sistem akan mengecek bentrok jadwal
+                                saat pengajuan dikirim.
                             </p>
                         </div>
 
@@ -162,7 +176,8 @@ $inisial = strtoupper(substr($namaMahasiswa, 0, 2));
                                         <option value="">Pilih laboratorium</option>
                                         <?php while ($d = mysqli_fetch_assoc($lab)) { ?>
                                             <option value="<?= htmlspecialchars($d['id_lab']) ?>">
-                                                <?= htmlspecialchars($d['nama_lab']) ?> • <?= htmlspecialchars($d['kapasitas']) ?> kursi
+                                                <?= htmlspecialchars($d['nama_lab']) ?> •
+                                                <?= htmlspecialchars($d['kapasitas']) ?> kursi
                                             </option>
                                         <?php } ?>
                                     </select>
@@ -170,45 +185,29 @@ $inisial = strtoupper(substr($namaMahasiswa, 0, 2));
 
                                 <div class="input-group-modern">
                                     <label>Tanggal Pinjam</label>
-                                    <input
-                                        type="date"
-                                        name="tanggal_pinjam"
-                                        class="form-control"
-                                        required>
+                                    <input type="date" name="tanggal_pinjam" class="form-control" required>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="input-group-modern">
                                             <label>Jam Mulai</label>
-                                            <input
-                                                type="time"
-                                                name="jam_mulai"
-                                                class="form-control"
-                                                required>
+                                            <input type="time" name="jam_mulai" class="form-control" required>
                                         </div>
                                     </div>
 
                                     <div class="col-6">
                                         <div class="input-group-modern">
                                             <label>Jam Selesai</label>
-                                            <input
-                                                type="time"
-                                                name="jam_selesai"
-                                                class="form-control"
-                                                required>
+                                            <input type="time" name="jam_selesai" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="input-group-modern">
                                     <label>Keperluan</label>
-                                    <textarea
-                                        name="keperluan"
-                                        class="form-control"
-                                        rows="4"
-                                        placeholder="Contoh: Praktikum pemrograman web"
-                                        required></textarea>
+                                    <textarea name="keperluan" class="form-control" rows="4"
+                                        placeholder="Contoh: Praktikum pemrograman web" required></textarea>
                                 </div>
 
                                 <button class="btn student-cta w-100">
@@ -238,7 +237,8 @@ $inisial = strtoupper(substr($namaMahasiswa, 0, 2));
                                     <div>
                                         <h3><?= htmlspecialchars($q['nama_lab']) ?></h3>
                                         <p>
-                                            <?= htmlspecialchars($q['lokasi']) ?> • <?= htmlspecialchars($q['kapasitas']) ?> kursi
+                                            <?= htmlspecialchars($q['lokasi']) ?> • <?= htmlspecialchars($q['kapasitas']) ?>
+                                            kursi
                                         </p>
                                     </div>
                                 </div>
@@ -265,7 +265,8 @@ $inisial = strtoupper(substr($namaMahasiswa, 0, 2));
 
                                             <p class="history-meta">
                                                 📅 <?= htmlspecialchars($r['tanggal_pinjam']) ?><br>
-                                                🕐 <?= htmlspecialchars($r['jam_mulai']) ?> - <?= htmlspecialchars($r['jam_selesai']) ?>
+                                                🕐 <?= htmlspecialchars($r['jam_mulai']) ?> -
+                                                <?= htmlspecialchars($r['jam_selesai']) ?>
                                             </p>
                                         </div>
 

@@ -93,6 +93,18 @@ $inisial = strtoupper(substr($namaAdmin, 0, 2));
 
             <div class="app-body">
 
+                <?php if (isset($_GET['success'])) { ?>
+                    <div class="alert alert-success mb-3">
+                        <?= htmlspecialchars($_GET['success']) ?>
+                    </div>
+                <?php } ?>
+
+                <?php if (isset($_GET['error'])) { ?>
+                    <div class="alert alert-danger mb-3">
+                        <?= htmlspecialchars($_GET['error']) ?>
+                    </div>
+                <?php } ?>
+                
                 <!-- Statistik -->
                 <div class="section-label">Statistik Sistem</div>
 

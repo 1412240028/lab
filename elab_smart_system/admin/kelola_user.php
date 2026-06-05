@@ -34,7 +34,8 @@ function getInitial($name)
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
     <!-- E-Lab UI -->
     <link rel="stylesheet" href="../assets/css/main.css">
@@ -58,9 +59,15 @@ function getInitial($name)
 
             <div class="app-body">
 
-                <?php if ($error) { ?>
+                <?php if (isset($_GET['success'])) { ?>
+                    <div class="alert alert-success mb-3">
+                        <?= htmlspecialchars($_GET['success']) ?>
+                    </div>
+                <?php } ?>
+
+                <?php if (isset($_GET['error'])) { ?>
                     <div class="alert alert-danger mb-3">
-                        <?= htmlspecialchars($error) ?>
+                        <?= htmlspecialchars($_GET['error']) ?>
                     </div>
                 <?php } ?>
 
@@ -96,7 +103,8 @@ function getInitial($name)
                         <div class="user-info-box">
                             <h2>Tambah Pengguna</h2>
                             <p>
-                                Buat akun baru untuk mahasiswa, dosen, atau admin agar bisa mengakses E-Lab Smart System.
+                                Buat akun baru untuk mahasiswa, dosen, atau admin agar bisa mengakses E-Lab Smart
+                                System.
                             </p>
                         </div>
 
@@ -112,32 +120,20 @@ function getInitial($name)
 
                                 <div class="input-group-modern">
                                     <label>Nama Lengkap</label>
-                                    <input
-                                        type="text"
-                                        name="nama"
-                                        class="form-control"
-                                        placeholder="Masukkan nama pengguna"
-                                        required>
+                                    <input type="text" name="nama" class="form-control"
+                                        placeholder="Masukkan nama pengguna" required>
                                 </div>
 
                                 <div class="input-group-modern">
                                     <label>Email</label>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        class="form-control"
-                                        placeholder="Masukkan email pengguna"
-                                        required>
+                                    <input type="email" name="email" class="form-control"
+                                        placeholder="Masukkan email pengguna" required>
                                 </div>
 
                                 <div class="input-group-modern">
                                     <label>Password</label>
-                                    <input
-                                        type="password"
-                                        name="password"
-                                        class="form-control"
-                                        placeholder="Buat password awal"
-                                        required>
+                                    <input type="password" name="password" class="form-control"
+                                        placeholder="Buat password awal" required>
                                 </div>
 
                                 <div class="input-group-modern">
@@ -199,13 +195,12 @@ function getInitial($name)
 
                                     <div class="user-actions">
                                         <?php if ($u['id_user'] != $_SESSION['id_user']) { ?>
-                                            <form
-                                                method="POST"
-                                                action="kelola_user_proses.php"
+                                            <form method="POST" action="kelola_user_proses.php"
                                                 onsubmit="return confirm('Hapus user ini? Aksi ini tidak bisa dibatalkan.')">
 
                                                 <input type="hidden" name="aksi" value="hapus">
-                                                <input type="hidden" name="id_user" value="<?= htmlspecialchars($u['id_user']) ?>">
+                                                <input type="hidden" name="id_user"
+                                                    value="<?= htmlspecialchars($u['id_user']) ?>">
 
                                                 <button class="btn-user-delete">
                                                     Hapus User

@@ -9,13 +9,13 @@ $jam_mulai = isset($_POST['jam_mulai']) ? trim($_POST['jam_mulai']) : '';
 $jam_selesai = isset($_POST['jam_selesai']) ? trim($_POST['jam_selesai']) : '';
 $keperluan = isset($_POST['keperluan']) ? trim($_POST['keperluan']) : '';
 
-if ($id_lab === 0 || $tanggal_pinjam === '' || $jam_mulai === '' || $jam_selesai === '' || $keperluan === '') {
-    echo "<script>alert('Semua field harus diisi'); window.location='dashboard.php';</script>";
+if ($id_lab == 0 || $tanggal_pinjam == '' || $jam_mulai == '' || $jam_selesai == '' || $keperluan == '') {
+    header("Location: dashboard.php?error=Semua+field+harus+diisi");
     exit;
 }
 
 if ($jam_mulai >= $jam_selesai) {
-    echo "<script>alert('Jam mulai harus lebih awal dari jam selesai'); window.location='dashboard.php';</script>";
+    header("Location: dashboard.php?error=Jam+mulai+harus+lebih+awal+dari+jam+selesai");
     exit;
 }
 
@@ -31,7 +31,7 @@ $cekBentrok = mysqli_prepare($conn, "
 ");
 
 if (!$cekBentrok) {
-    echo "<script>alert('Gagal menyiapkan pengecekan jadwal'); window.location='dashboard.php';</script>";
+    header("Location: dashboard.php?error=Gagal menyiapkan pengecekan jadwal");
     exit;
 }
 
@@ -48,7 +48,7 @@ mysqli_stmt_execute($cekBentrok);
 $hasilBentrok = mysqli_stmt_get_result($cekBentrok);
 
 if (mysqli_num_rows($hasilBentrok) > 0) {
-    echo "<script>alert('Jadwal bentrok! Laboratorium sudah digunakan pada jam tersebut'); window.location='dashboard.php';</script>";
+    header("Location: dashboard.php?error=Jadwal+bentrok!+Laboratorium+sudah+digunakan+pada/jam+tersebut");
     exit;
 }
 
@@ -58,7 +58,7 @@ $stmt = mysqli_prepare($conn, "
 ");
 
 if (!$stmt) {
-    echo "<script>alert('Gagal menyiapkan data peminjaman'); window.location='dashboard.php';</script>";
+    header("Location: dashboard.php?error=Gagal menyiapkan data peminjaman");
     exit;
 }
 
@@ -74,10 +74,10 @@ mysqli_stmt_bind_param(
 );
 
 if (!mysqli_stmt_execute($stmt)) {
-    echo "<script>alert('Peminjaman gagal diajukan'); window.location='dashboard.php';</script>";
+    header("Location: dashboard.php?error=Peminjaman gagal diajukan");
     exit;
 }
 
-echo "<script>alert('Peminjaman berhasil diajukan'); window.location='dashboard.php';</script>";
+header("Location: dashboard.php?success=Peminjaman berhasil diajukan");
 exit;
 ?>

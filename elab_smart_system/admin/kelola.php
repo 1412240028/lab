@@ -40,7 +40,8 @@ $labTidakTersedia = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM laborator
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
     <!-- E-Lab UI -->
     <link rel="stylesheet" href="../assets/css/main.css">
@@ -64,6 +65,18 @@ $labTidakTersedia = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM laborator
 
             <div class="app-body">
 
+                <?php if (isset($_GET['success'])) { ?>
+                    <div class="alert alert-success mb-3">
+                        <?= htmlspecialchars($_GET['success']) ?>
+                    </div>
+                <?php } ?>
+
+                <?php if (isset($_GET['error'])) { ?>
+                    <div class="alert alert-danger mb-3">
+                        <?= htmlspecialchars($_GET['error']) ?>
+                    </div>
+                <?php } ?>
+                
                 <!-- Statistik Mini -->
                 <div class="section-label">Ringkasan Data Lab</div>
 
@@ -120,36 +133,23 @@ $labTidakTersedia = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM laborator
 
                             <div class="input-group-modern">
                                 <label>Nama Laboratorium</label>
-                                <input
-                                    type="text"
-                                    name="nama_lab"
-                                    class="form-control"
+                                <input type="text" name="nama_lab" class="form-control"
                                     placeholder="Contoh: Lab Komputer 1"
-                                    value="<?= $editData ? htmlspecialchars($editData['nama_lab']) : '' ?>"
-                                    required>
+                                    value="<?= $editData ? htmlspecialchars($editData['nama_lab']) : '' ?>" required>
                             </div>
 
                             <div class="input-group-modern">
                                 <label>Kapasitas</label>
-                                <input
-                                    type="number"
-                                    name="kapasitas"
-                                    class="form-control"
-                                    placeholder="Contoh: 30"
-                                    min="1"
-                                    value="<?= $editData ? htmlspecialchars($editData['kapasitas']) : '' ?>"
+                                <input type="number" name="kapasitas" class="form-control" placeholder="Contoh: 30"
+                                    min="1" value="<?= $editData ? htmlspecialchars($editData['kapasitas']) : '' ?>"
                                     required>
                             </div>
 
                             <div class="input-group-modern">
                                 <label>Lokasi</label>
-                                <input
-                                    type="text"
-                                    name="lokasi"
-                                    class="form-control"
+                                <input type="text" name="lokasi" class="form-control"
                                     placeholder="Contoh: Gedung A Lantai 2"
-                                    value="<?= $editData ? htmlspecialchars($editData['lokasi']) : '' ?>"
-                                    required>
+                                    value="<?= $editData ? htmlspecialchars($editData['lokasi']) : '' ?>" required>
                             </div>
 
                             <div class="input-group-modern">
@@ -216,17 +216,17 @@ $labTidakTersedia = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM laborator
                                     </div>
 
                                     <div class="manage-action-row">
-                                        <a href="kelola.php?edit=<?= htmlspecialchars($d['id_lab']) ?>" class="btn-mini-edit">
+                                        <a href="kelola.php?edit=<?= htmlspecialchars($d['id_lab']) ?>"
+                                            class="btn-mini-edit">
                                             Edit
                                         </a>
 
-                                        <form
-                                            method="POST"
-                                            action="kelola_proses.php"
+                                        <form method="POST" action="kelola_proses.php"
                                             onsubmit="return confirm('Hapus laboratorium ini? Data yang terhubung bisa ikut terdampak.')">
 
                                             <input type="hidden" name="aksi" value="hapus">
-                                            <input type="hidden" name="id_lab" value="<?= htmlspecialchars($d['id_lab']) ?>">
+                                            <input type="hidden" name="id_lab"
+                                                value="<?= htmlspecialchars($d['id_lab']) ?>">
 
                                             <button class="btn-mini-delete">
                                                 Hapus
@@ -243,7 +243,7 @@ $labTidakTersedia = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM laborator
             </div>
 
             <?php require_once "_nav.php"; ?>
-            
+
         </section>
     </main>
 

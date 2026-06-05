@@ -6,7 +6,7 @@ $aksi = isset($_POST['aksi']) ? trim($_POST['aksi']) : '';
 $allowedAksi = ['tambah', 'edit', 'hapus'];
 
 if (!in_array($aksi, $allowedAksi, true)) {
-    header("Location: kelola.php");
+    header("Location: kelola.php?success=Laboratorium+berhasil+ditambahkan");
     exit;
 }
 
@@ -19,7 +19,7 @@ if ($aksi === 'tambah' || $aksi === 'edit') {
     $status = isset($_POST['status']) ? trim($_POST['status']) : '';
 
     if ($nama_lab === '' || $kapasitas <= 0 || $lokasi === '' || !in_array($status, $allowedStatus, true)) {
-        header("Location: kelola.php");
+        header("Location: kelola.php?error=Semua field harus diisi dengan benar");
         exit;
     }
 }
@@ -31,14 +31,14 @@ if ($aksi === 'tambah') {
     ");
 
     if (!$stmt) {
-        header("Location: kelola.php");
+        header("Location: kelola.php?error=Gagal menyiapkan data laboratorium");
         exit;
     }
 
     mysqli_stmt_bind_param($stmt, "siss", $nama_lab, $kapasitas, $lokasi, $status);
     mysqli_stmt_execute($stmt);
 
-    header("Location: kelola.php");
+    header("Location: kelola.php?success=Laboratorium+berhasil+ditambahkan");
     exit;
 }
 
@@ -46,7 +46,7 @@ if ($aksi === 'edit') {
     $id_lab = isset($_POST['id_lab']) ? (int) $_POST['id_lab'] : 0;
 
     if ($id_lab <= 0) {
-        header("Location: kelola.php");
+        header("Location: kelola.php?error=ID laboratorium tidak valid");
         exit;
     }
 
@@ -57,14 +57,14 @@ if ($aksi === 'edit') {
     ");
 
     if (!$stmt) {
-        header("Location: kelola.php");
+        header("Location: kelola.php?error=Gagal menyiapkan data laboratorium");
         exit;
     }
 
     mysqli_stmt_bind_param($stmt, "sissi", $nama_lab, $kapasitas, $lokasi, $status, $id_lab);
     mysqli_stmt_execute($stmt);
 
-    header("Location: kelola.php");
+    header("Location: kelola.php?success=Laboratorium+berhasil+diubah");
     exit;
 }
 
@@ -72,7 +72,7 @@ if ($aksi === 'hapus') {
     $id_lab = isset($_POST['id_lab']) ? (int) $_POST['id_lab'] : 0;
 
     if ($id_lab <= 0) {
-        header("Location: kelola.php");
+        header("Location: kelola.php?error=ID laboratorium tidak valid");
         exit;
     }
 
@@ -82,14 +82,14 @@ if ($aksi === 'hapus') {
     ");
 
     if (!$stmt) {
-        header("Location: kelola.php");
+        header("Location: kelola.php?error=Gagal menyiapkan data laboratorium");
         exit;
     }
 
     mysqli_stmt_bind_param($stmt, "i", $id_lab);
     mysqli_stmt_execute($stmt);
 
-    header("Location: kelola.php");
+    header("Location: kelola.php?success=Laboratorium+berhasil+dihapus");
     exit;
 }
 ?>
