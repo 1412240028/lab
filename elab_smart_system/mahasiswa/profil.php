@@ -229,20 +229,11 @@ $totalDitolak = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtDitolak))['total'
 
             </div>
 
-            <!-- Bottom Nav -->
-            <nav class="bottom-nav-modern bottom-nav-student">
-                <a href="dashboard.php">Beranda</a>
-                <a href="riwayat.php">Riwayat</a>
-                <a href="notifikasi.php">Notifikasi</a>
-                <a href="profil.php" class="active">Profil</a>
-                <a href="../logout.php">Logout</a>
-            </nav>
-
+            <?php require_once "_nav.php"; ?>
+ 
         </section>
     </main>
-
-    <?php require_once "_nav.php"; ?>
-    
+   
 </body>
 
 </html>

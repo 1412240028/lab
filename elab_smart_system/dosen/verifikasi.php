@@ -189,11 +189,11 @@ $peminjaman = mysqli_query($conn, "
 
                 <?php endif; ?>
 
+                <?php require_once "_nav.php"; ?>
+
             </section>
 
         </main>
-
-        <?php require_once "_nav.php"; ?>
 
     </div>
 </div>

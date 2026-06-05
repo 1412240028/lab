@@ -226,20 +226,10 @@ function getInitial($name)
 
             </div>
 
-            <!-- Bottom Nav -->
-            <nav class="bottom-nav-modern">
-                <a href="dashboard.php">Beranda</a>
-                <a href="jadwal.php">Jadwal</a>
-                <a href="laporan.php">Laporan</a>
-                <a href="kelola.php">Kelola</a>
-                <a href="kelola_user.php" class="active">User</a>
-                <a href="../logout.php">Logout</a>
-            </nav>
+            <?php require_once "_nav.php"; ?>
 
         </section>
     </main>
-
-    <?php require_once "_nav.php"; ?>
 
 </body>
 

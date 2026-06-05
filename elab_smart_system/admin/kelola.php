@@ -242,19 +242,10 @@ $labTidakTersedia = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM laborator
 
             </div>
 
-            <!-- Bottom Nav -->
-            <nav class="bottom-nav-modern">
-                <a href="dashboard.php">Beranda</a>
-                <a href="jadwal.php">Jadwal</a>
-                <a href="laporan.php">Laporan</a>
-                <a href="kelola.php" class="active">Kelola</a>
-                <a href="kelola_user.php">User</a>
-                <a href="../logout.php">Logout</a>
-            </nav>
+            <?php require_once "_nav.php"; ?>
+            
         </section>
     </main>
-
-    <?php require_once "_nav.php"; ?>
 
 </body>
 

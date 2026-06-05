@@ -283,19 +283,10 @@ $inisial = strtoupper(substr($namaMahasiswa, 0, 2));
 
             </div>
 
-            <!-- Bottom Nav -->
-            <nav class="bottom-nav-modern bottom-nav-student">
-                <a href="dashboard.php" class="active">Beranda</a>
-                <a href="riwayat.php">Riwayat</a>
-                <a href="notifikasi.php">Notifikasi</a>
-                <a href="profil.php">Profil</a>
-                <a href="../logout.php">Logout</a>
-            </nav>
-            
+            <?php require_once "_nav.php"; ?>
+
         </section>
     </main>
-
-    <?php require_once "_nav.php"; ?>
 
 </body>
 

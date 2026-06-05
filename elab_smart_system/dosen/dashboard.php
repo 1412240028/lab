@@ -117,11 +117,12 @@ if ($queryDisetujui) {
                         <a href="verifikasi.php" class="btn-elab btn-purple-elab">Verifikasi</a>
                     </div>
                 </div>
+
+                <?php require_once "_nav.php"; ?>
+
             </section>
 
         </main>
-
-        <?php require_once "_nav.php"; ?>
 
     </div>
 </div>
