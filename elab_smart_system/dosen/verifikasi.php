@@ -8,14 +8,15 @@ $message = '';
 $messageType = 'success';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $idPeminjaman = $_POST['id_peminjaman'] ?? null;
-    $aksi = $_POST['aksi'] ?? null;
+    $idPeminjaman = isset($_POST['id_peminjaman']) ? (int) $_POST['id_peminjaman'] : 0;
+    $aksi = isset($_POST['aksi']) ? trim($_POST['aksi']) : '';
 
-    if ($idPeminjaman && in_array($aksi, ['disetujui', 'ditolak'], true)) {
+    if ($idPeminjaman > 0 && in_array($aksi, ['disetujui', 'ditolak'], true)) {
         $stmt = mysqli_prepare($conn, "
             UPDATE peminjaman
-            SET status = ?
+            SET status = ?, dibaca = 0
             WHERE id_peminjaman = ?
+            AND status = 'menunggu'
         ");
 
         if ($stmt) {

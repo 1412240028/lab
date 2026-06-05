@@ -2,12 +2,17 @@
 require_once "_guard.php";
 require_once "../koneksi.php";
 
-$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
-$status = isset($_GET['status']) ? trim($_GET['status']) : '';
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header("Location: dashboard.php");
+    exit;
+}
 
-$allowed_status = ['disetujui', 'ditolak'];
+$id = isset($_POST['id_peminjaman']) ? (int) $_POST['id_peminjaman'] : 0;
+$status = isset($_POST['status']) ? trim($_POST['status']) : '';
 
-if ($id <= 0 || !in_array($status, $allowed_status, true)) {
+$allowedStatus = ['disetujui', 'ditolak'];
+
+if ($id <= 0 || !in_array($status, $allowedStatus, true)) {
     header("Location: dashboard.php");
     exit;
 }
@@ -16,6 +21,7 @@ $stmt = mysqli_prepare($conn, "
     UPDATE peminjaman
     SET status = ?, dibaca = 0
     WHERE id_peminjaman = ?
+    AND status = 'menunggu'
 ");
 
 if (!$stmt) {

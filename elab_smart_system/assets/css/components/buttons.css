@@ -219,3 +219,13 @@
     color: var(--primary-blue-dark);
     background: rgba(15, 98, 254, 0.16);
 }
+
+.action-row form {
+    flex: 1;
+    margin: 0;
+}
+
+.action-row .btn-action {
+    width: 100%;
+    border: none;
+}

@@ -210,15 +210,27 @@ $inisial = strtoupper(substr($namaAdmin, 0, 2));
                                 </div>
 
                                 <div class="action-row">
-                                    <a href="proses.php?id=<?= $d['id_peminjaman'] ?>&status=ditolak"
-                                        class="btn-action btn-reject" onclick="return confirm('Tolak permohonan ini?')">
-                                        Tolak
-                                    </a>
+                                    <form method="POST" action="proses.php"
+                                        onsubmit="return confirm('Tolak permohonan ini?')">
+                                        <input type="hidden" name="id_peminjaman"
+                                            value="<?= htmlspecialchars($d['id_peminjaman']) ?>">
+                                        <input type="hidden" name="status" value="ditolak">
 
-                                    <a href="proses.php?id=<?= $d['id_peminjaman'] ?>&status=disetujui"
-                                        class="btn-action btn-approve" onclick="return confirm('Setujui permohonan ini?')">
-                                        Setujui
-                                    </a>
+                                        <button type="submit" class="btn-action btn-reject">
+                                            Tolak
+                                        </button>
+                                    </form>
+
+                                    <form method="POST" action="proses.php"
+                                        onsubmit="return confirm('Setujui permohonan ini?')">
+                                        <input type="hidden" name="id_peminjaman"
+                                            value="<?= htmlspecialchars($d['id_peminjaman']) ?>">
+                                        <input type="hidden" name="status" value="disetujui">
+
+                                        <button type="submit" class="btn-action btn-approve">
+                                            Setujui
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         <?php } ?>
@@ -259,7 +271,7 @@ $inisial = strtoupper(substr($namaAdmin, 0, 2));
                 </div>
 
             </div>
-            
+
             <?php require_once "_nav.php"; ?>
 
         </section>
