@@ -9,30 +9,30 @@ if (isset($_SESSION['role'])) {
 include 'koneksi.php';
 
 if (isset($_POST['daftar'])) {
-    $nama = trim($_POST['nama']);
-    $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
+    $nama      = trim($_POST['nama']);
+    $nim       = trim($_POST['nim']);
+    $email     = trim($_POST['email']);
+    $password  = trim($_POST['password']);
     $konfirmasi = trim($_POST['konfirmasi']);
 
     if ($password !== $konfirmasi) {
         $error = "Password dan konfirmasi tidak cocok";
     } else {
-        $cek = mysqli_prepare($conn, "SELECT * FROM users WHERE email=?");
-        mysqli_stmt_bind_param($cek, "s", $email);
+        $cek = mysqli_prepare($conn, "SELECT * FROM users WHERE email=? OR nim=?");
+        mysqli_stmt_bind_param($cek, "ss", $email, $nim);
         mysqli_stmt_execute($cek);
         $hasil = mysqli_stmt_get_result($cek);
 
         if (mysqli_num_rows($hasil) > 0) {
-            $error = "Email sudah terdaftar";
+            $error = "Email atau NIM sudah terdaftar";
         } else {
             $hash = password_hash($password, PASSWORD_DEFAULT);
 
             $stmt = mysqli_prepare($conn, "
-                INSERT INTO users(nama, email, password, role)
-                VALUES(?, ?, ?, 'mahasiswa')
+                INSERT INTO users(nama, nim, email, password, role)
+                VALUES(?, ?, ?, ?, 'mahasiswa')
             ");
-
-            mysqli_stmt_bind_param($stmt, "sss", $nama, $email, $hash);
+            mysqli_stmt_bind_param($stmt, "ssss", $nama, $nim, $email, $hash);
             mysqli_stmt_execute($stmt);
 
             $success = "Registrasi berhasil! Silakan login.";
@@ -95,43 +95,31 @@ if (isset($_POST['daftar'])) {
 
                     <div class="mb-3">
                         <label class="form-label">Nama Lengkap</label>
-                        <input
-                            type="text"
-                            name="nama"
-                            class="form-control"
-                            placeholder="Masukkan nama lengkap"
-                            required
+                        <input type="text" name="nama" class="form-control" placeholder="Masukkan nama lengkap" required
                             value="<?= isset($_POST['nama']) ? htmlspecialchars($_POST['nama']) : '' ?>">
                     </div>
 
                     <div class="mb-3">
+                        <label class="form-label">NIM</label>
+                        <input type="text" name="nim" class="form-control" placeholder="Masukkan NIM kamu" required
+                            value="<?= isset($_POST['nim']) ? htmlspecialchars($_POST['nim']) : '' ?>">
+                    </div>
+
+                    <div class="mb-3">
                         <label class="form-label">Email</label>
-                        <input
-                            type="email"
-                            name="email"
-                            class="form-control"
-                            placeholder="Masukkan email aktif"
-                            required
-                            value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>">
+                        <input type="email" name="email" class="form-control" placeholder="Masukkan email aktif"
+                            required value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Password</label>
-                        <input
-                            type="password"
-                            name="password"
-                            class="form-control"
-                            placeholder="Buat password"
+                        <input type="password" name="password" class="form-control" placeholder="Buat password"
                             required>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label">Konfirmasi Password</label>
-                        <input
-                            type="password"
-                            name="konfirmasi"
-                            class="form-control"
-                            placeholder="Ulangi password"
+                        <input type="password" name="konfirmasi" class="form-control" placeholder="Ulangi password"
                             required>
                     </div>
 

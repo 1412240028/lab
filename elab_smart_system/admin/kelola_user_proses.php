@@ -13,10 +13,12 @@ if (!in_array($aksi, $allowedAksi, true)) {
 $allowedRoles = ['admin', 'mahasiswa', 'dosen'];
 
 if ($aksi === 'tambah') {
-    $nama = isset($_POST['nama']) ? trim($_POST['nama']) : '';
-    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+    $nama          = isset($_POST['nama'])     ? trim($_POST['nama'])     : '';
+    $email         = isset($_POST['email'])    ? trim($_POST['email'])    : '';
     $plainPassword = isset($_POST['password']) ? trim($_POST['password']) : '';
-    $role = isset($_POST['role']) ? trim($_POST['role']) : '';
+    $role          = isset($_POST['role'])     ? trim($_POST['role'])     : '';
+    $nim = isset($_POST['nim']) ? trim($_POST['nim']) : null;
+    $nip = isset($_POST['nip']) ? trim($_POST['nip']) : null;
 
     if ($nama === '' || $email === '' || $plainPassword === '' || $role === '') {
         header("Location: kelola_user.php?error=Semua+field+wajib+diisi");
@@ -38,11 +40,18 @@ if ($aksi === 'tambah') {
         exit;
     }
 
+    if ($role === 'mahasiswa' && empty($nim)) {
+        header("Location: kelola_user.php?error=NIM+wajib+diisi+untuk+mahasiswa");
+        exit;
+    }
+
+    if ($role === 'dosen' && empty($nip)) {
+        header("Location: kelola_user.php?error=NIP+wajib+diisi+untuk+dosen");
+        exit;
+    }
+
     $cek = mysqli_prepare($conn, "
-        SELECT id_user
-        FROM users
-        WHERE email = ?
-        LIMIT 1
+        SELECT id_user FROM users WHERE email = ? LIMIT 1
     ");
 
     if (!$cek) {
@@ -59,11 +68,35 @@ if ($aksi === 'tambah') {
         exit;
     }
 
+    if (!empty($nim)) {
+        $cekNim = mysqli_prepare($conn, "
+            SELECT id_user FROM users WHERE nim = ? LIMIT 1
+        ");
+        mysqli_stmt_bind_param($cekNim, "s", $nim);
+        mysqli_stmt_execute($cekNim);
+        if (mysqli_num_rows(mysqli_stmt_get_result($cekNim)) > 0) {
+            header("Location: kelola_user.php?error=NIM+sudah+terdaftar");
+            exit;
+        }
+    }
+
+    if (!empty($nip)) {
+        $cekNip = mysqli_prepare($conn, "
+            SELECT id_user FROM users WHERE nip = ? LIMIT 1
+        ");
+        mysqli_stmt_bind_param($cekNip, "s", $nip);
+        mysqli_stmt_execute($cekNip);
+        if (mysqli_num_rows(mysqli_stmt_get_result($cekNip)) > 0) {
+            header("Location: kelola_user.php?error=NIP+sudah+terdaftar");
+            exit;
+        }
+    }
+
     $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
 
     $stmt = mysqli_prepare($conn, "
-        INSERT INTO users(nama, email, password, role)
-        VALUES(?, ?, ?, ?)
+        INSERT INTO users(nama, nim, nip, email, password, role)
+        VALUES(?, ?, ?, ?, ?, ?)
     ");
 
     if (!$stmt) {
@@ -71,7 +104,7 @@ if ($aksi === 'tambah') {
         exit;
     }
 
-    mysqli_stmt_bind_param($stmt, "ssss", $nama, $email, $hashedPassword, $role);
+    mysqli_stmt_bind_param($stmt, "ssssss", $nama, $nim, $nip, $email, $hashedPassword, $role);
 
     if (!mysqli_stmt_execute($stmt)) {
         header("Location: kelola_user.php?error=Gagal+menambahkan+pengguna");
@@ -96,8 +129,7 @@ if ($aksi === 'hapus') {
     }
 
     $stmt = mysqli_prepare($conn, "
-        DELETE FROM users
-        WHERE id_user = ?
+        DELETE FROM users WHERE id_user = ?
     ");
 
     if (!$stmt) {

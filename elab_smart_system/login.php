@@ -3,75 +3,72 @@ session_start();
 include 'koneksi.php';
 
 if (isset($_POST['login'])) {
-    $email = trim($_POST['email']);
+    $identifier = trim($_POST['email']); // field input tetap nama "email"
     $plainPassword = trim($_POST['password']);
 
     $stmt = mysqli_prepare($conn, "
-        SELECT id_user, nama, email, role, password
+        SELECT id_user, nama, email, nim, nip, role, password
         FROM users
-        WHERE email=?
+        WHERE email = ?
+           OR nim = ?
+           OR nip = ?
         LIMIT 1
     ");
 
     if (!$stmt) {
         $error = "Gagal menyiapkan query: " . mysqli_error($conn);
     } else {
-        if (!mysqli_stmt_bind_param($stmt, "s", $email)) {
-            $error = "Gagal bind param: " . mysqli_stmt_error($stmt);
+        mysqli_stmt_bind_param($stmt, "sss", $identifier, $identifier, $identifier);
+
+        if (!mysqli_stmt_execute($stmt)) {
+            $error = "Gagal execute query: " . mysqli_stmt_error($stmt);
         } else {
-            if (!mysqli_stmt_execute($stmt)) {
-                $error = "Gagal execute query: " . mysqli_stmt_error($stmt);
-            } else {
-                $result = mysqli_stmt_get_result($stmt);
-                $data = mysqli_fetch_assoc($result);
+            $result = mysqli_stmt_get_result($stmt);
+            $data = mysqli_fetch_assoc($result);
 
-                if ($data) {
-                    $storedHash = $data['password'];
-                    $isValid = password_verify($plainPassword, $storedHash);
+            if ($data) {
+                $storedHash = $data['password'];
+                $isValid = password_verify($plainPassword, $storedHash);
 
-                    if (!$isValid) {
-                        $isValid = hash_equals(md5($plainPassword), $storedHash);
-
-                        if ($isValid) {
-                            $newHash = password_hash($plainPassword, PASSWORD_DEFAULT);
-                            $upd = mysqli_prepare($conn, "UPDATE users SET password=? WHERE id_user=?");
-
-                            if ($upd) {
-                                mysqli_stmt_bind_param($upd, "si", $newHash, $data['id_user']);
-                                mysqli_stmt_execute($upd);
-                            }
-                        }
-                    }
+                if (!$isValid) {
+                    $isValid = hash_equals(md5($plainPassword), $storedHash);
 
                     if ($isValid) {
-                        session_regenerate_id(true);
-
-                        $_SESSION['id_user'] = $data['id_user'];
-                        $_SESSION['nama'] = $data['nama'];
-                        $_SESSION['role'] = $data['role'];
-
-                        if ($data['role'] === 'admin') {
-                            header("Location: admin/dashboard.php");
-                            exit;
+                        $newHash = password_hash($plainPassword, PASSWORD_DEFAULT);
+                        $upd = mysqli_prepare($conn, "UPDATE users SET password=? WHERE id_user=?");
+                        if ($upd) {
+                            mysqli_stmt_bind_param($upd, "si", $newHash, $data['id_user']);
+                            mysqli_stmt_execute($upd);
                         }
-
-                        if ($data['role'] === 'mahasiswa') {
-                            header("Location: mahasiswa/dashboard.php");
-                            exit;
-                        }
-
-                        if ($data['role'] === 'dosen') {
-                            header("Location: dosen/dashboard.php");
-                            exit;
-                        }
-
-                        $error = "Role tidak valid. Hubungi administrator.";
-                    } else {
-                        $error = "Email atau password salah";
                     }
-                } else {
-                    $error = "Email atau password salah";
                 }
+
+                if ($isValid) {
+                    session_regenerate_id(true);
+
+                    $_SESSION['id_user'] = $data['id_user'];
+                    $_SESSION['nama'] = $data['nama'];
+                    $_SESSION['role'] = $data['role'];
+
+                    if ($data['role'] === 'admin') {
+                        header("Location: admin/dashboard.php");
+                        exit;
+                    }
+                    if ($data['role'] === 'mahasiswa') {
+                        header("Location: mahasiswa/dashboard.php");
+                        exit;
+                    }
+                    if ($data['role'] === 'dosen') {
+                        header("Location: dosen/dashboard.php");
+                        exit;
+                    }
+
+                    $error = "Role tidak valid. Hubungi administrator.";
+                } else {
+                    $error = "Email / NIM / NIP atau password salah";
+                }
+            } else {
+                $error = "Email / NIM / NIP atau password salah";
             }
         }
     }
@@ -125,9 +122,9 @@ if (isset($_POST['login'])) {
                 <form method="POST" autocomplete="off">
 
                     <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" name="email" class="form-control" placeholder="Masukkan email akun" required
-                            value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>">
+                        <label class="form-label">Email / NIM / NIP</label>
+                        <input type="text" name="email" class="form-control" placeholder="Masukkan email, NIM, atau NIP"
+                            required value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>">
                     </div>
 
                     <div class="mb-2">
