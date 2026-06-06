@@ -8,7 +8,19 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
     exit;
 }
 
-$data = mysqli_query($conn, "SELECT * FROM laboratorium");
+$filter_id_lab = isset($_GET['id_lab']) ? (int) $_GET['id_lab'] : 0;
+
+$semuaLab = mysqli_query($conn, "SELECT * FROM laboratorium ORDER BY nama_lab ASC");
+
+if ($filter_id_lab > 0) {
+    $stmt = mysqli_prepare($conn, "SELECT * FROM laboratorium WHERE id_lab = ?");
+    mysqli_stmt_bind_param($stmt, "i", $filter_id_lab);
+    mysqli_stmt_execute($stmt);
+    $data = mysqli_stmt_get_result($stmt);
+} else {
+    $data = mysqli_query($conn, "SELECT * FROM laboratorium");
+}
+
 $totalLab = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM laboratorium"));
 $labTersedia = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM laboratorium WHERE status='tersedia'"));
 $labTidakTersedia = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM laboratorium WHERE status='tidak tersedia'"));
@@ -81,28 +93,54 @@ $labTidakTersedia = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM laborator
                     </div>
                 </div>
 
-                <div class="section-label">Daftar Laboratorium</div>
+                <!-- TAMBAHAN: Filter by lab -->
+                <div class="section-label">Filter Laboratorium</div>
 
-                <?php if (mysqli_num_rows($data) == 0) { ?>
+                <div class="report-filter-panel mb-3">
+                    <form method="GET">
+                        <div class="input-group-modern">
+                            <label>Pilih Laboratorium</label>
+                            <select name="id_lab" class="form-select" onchange="this.form.submit()">
+                                <option value="">Semua Laboratorium</option>
+                                <?php while ($l = mysqli_fetch_assoc($semuaLab)): ?>
+                                    <option value="<?= htmlspecialchars($l['id_lab']) ?>"
+                                        <?= $filter_id_lab == $l['id_lab'] ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($l['nama_lab']) ?>
+                                    </option>
+                                <?php endwhile; ?>
+                            </select>
+                        </div>
+
+                        <?php if ($filter_id_lab > 0): ?>
+                            <a href="jadwal.php" class="btn btn-neutral mt-2" style="min-height:44px; display:flex; align-items:center; justify-content:center; border-radius:14px; font-weight:900; font-size:13px; text-decoration:none;">
+                                Tampilkan Semua Lab
+                            </a>
+                        <?php endif; ?>
+                    </form>
+                </div>
+
+                <div class="section-label">
+                    <?= $filter_id_lab > 0 ? 'Detail Laboratorium' : 'Daftar Laboratorium' ?>
+                </div>
+
+                <?php if (mysqli_num_rows($data) == 0): ?>
                     <div class="empty-state">
-                        Tidak ada data laboratorium. Tambahkan lab dulu dari menu Kelola.
+                        Tidak ada data laboratorium ditemukan.
                     </div>
-                <?php } ?>
+                <?php endif; ?>
 
-                <?php while ($d = mysqli_fetch_assoc($data)) { ?>
-                    <?php
-                    $isAvailable = $d['status'] == 'tersedia';
-                    ?>
+                <?php while ($d = mysqli_fetch_assoc($data)): ?>
+                    <?php $isAvailable = $d['status'] == 'tersedia'; ?>
 
                     <div class="lab-card-modern">
                         <div class="lab-card-top">
                             <div>
                                 <h2 class="lab-card-title">
-                                    <?php if ($isAvailable) { ?>
+                                    <?php if ($isAvailable): ?>
                                         <span class="status-dot green"></span>
-                                    <?php } else { ?>
+                                    <?php else: ?>
                                         <span class="status-dot red"></span>
-                                    <?php } ?>
+                                    <?php endif; ?>
 
                                     <?= htmlspecialchars($d['nama_lab']) ?>
                                 </h2>
@@ -122,8 +160,51 @@ $labTidakTersedia = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM laborator
                                 <?= $isAvailable ? 'Tersedia' : 'Tidak tersedia' ?>
                             </span>
                         </div>
+
+                        <?php
+                        $stmtJadwal = mysqli_prepare($conn, "
+                            SELECT peminjaman.*, users.nama AS nama_user
+                            FROM peminjaman
+                            JOIN users ON peminjaman.id_user = users.id_user
+                            WHERE peminjaman.id_lab = ?
+                            AND peminjaman.status = 'disetujui'
+                            ORDER BY peminjaman.tanggal_pinjam ASC, peminjaman.jam_mulai ASC
+                        ");
+                        mysqli_stmt_bind_param($stmtJadwal, "i", $d['id_lab']);
+                        mysqli_stmt_execute($stmtJadwal);
+                        $jadwalLab = mysqli_stmt_get_result($stmtJadwal);
+                        ?>
+
+                        <?php if (mysqli_num_rows($jadwalLab) > 0): ?>
+                            <div class="mt-3">
+                                <div style="font-size:12px; font-weight:900; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">
+                                    Jadwal Peminjaman
+                                </div>
+
+                                <?php while ($j = mysqli_fetch_assoc($jadwalLab)): ?>
+                                    <div style="background:#f8fafc; border:1px solid #eef2f7; border-radius:16px; padding:12px 14px; margin-bottom:10px;">
+                                        <div style="font-size:14px; font-weight:900; color:var(--text-main); margin-bottom:4px;">
+                                            <?= htmlspecialchars($j['nama_user']) ?>
+                                        </div>
+                                        <div style="font-size:13px; color:var(--text-muted); font-weight:600;">
+                                            📅 <?= htmlspecialchars($j['tanggal_pinjam']) ?>
+                                            &nbsp;•&nbsp;
+                                            🕐 <?= htmlspecialchars($j['jam_mulai']) ?> - <?= htmlspecialchars($j['jam_selesai']) ?>
+                                        </div>
+                                        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">
+                                            📝 <?= htmlspecialchars($j['keperluan']) ?>
+                                        </div>
+                                    </div>
+                                <?php endwhile; ?>
+                            </div>
+                        <?php else: ?>
+                            <div style="margin-top:12px; font-size:13px; color:var(--text-muted); font-weight:600;">
+                                Belum ada jadwal peminjaman untuk lab ini.
+                            </div>
+                        <?php endif; ?>
+
                     </div>
-                <?php } ?>
+                <?php endwhile; ?>
 
             </div>
 
